@@ -28,7 +28,7 @@ import componentsRouter from "./modules/components";
 import { getAsyncRoutes } from "/@/api/routes";
 
 // https://cn.vitejs.dev/guide/features.html#glob-import
-const modulesRoutes = import.meta.glob("/src/views/*/*/*.vue");
+const modulesRoutes = import.meta.glob("/src/views/**/**/**.vue");
 
 const constantRoutes: Array<RouteComponent> = [
   homeRouter,
@@ -119,8 +119,12 @@ export const handleAliveRoute = (
 export const addAsyncRoutes = (arrRoutes: Array<RouteComponent>) => {
   if (!arrRoutes || !arrRoutes.length) return;
   arrRoutes.forEach((v: any) => {
+    console.log(v);
     if (v.redirect) {
       v.component = Layout;
+      if (v.node > 1) {
+        v.component = modulesRoutes[`/src/views${v.path}/index.vue`];
+      }
     } else {
       v.component = modulesRoutes[`/src/views${v.path}/index.vue`];
     }
@@ -175,6 +179,8 @@ export const initRouter = name => {
           resolve(router);
         });
       }
+      console.log(router);
+      console.log(modulesRoutes);
       router.addRoute({
         path: "/:pathMatch(.*)",
         redirect: "/error/404"
