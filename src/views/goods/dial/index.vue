@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
-let title = ref("Goods List");
+let dial = ref("Dial");
 </script>
+
 <template>
   <div class="app-container">
-    <h1>{{ title }}</h1>
+    <h1>{{ dial }}</h1>
   </div>
 </template>

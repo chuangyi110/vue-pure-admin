@@ -65,13 +65,21 @@ const permissionRouter = {
 const goodsRoutes = {
   path: "/goods",
   name: "goods",
-  redirect: "/goods/list",
-  component: "/goods/index",
+  redirect: "/goods/dial",
+  node: "2",
   meta: {
-    title: "message.basic.goods.dial",
+    title: "message.basic.goods.title",
     showLink: true
   },
   children: [
+    {
+      path: "/goods/dial",
+      name: "goodsDial",
+      meta: {
+        title: "message.basic.goods.dial",
+        showLink: true
+      }
+    },
     {
       path: "/goods/list",
       name: "goodsList",
@@ -103,6 +111,15 @@ const goodsRoutes = {
       name: "category",
       meta: {
         title: "message.basic.goods.goodsCategory",
+        showLink: true,
+        authority: []
+      }
+    },
+    {
+      path: "/goods/brand",
+      name: "brand",
+      meta: {
+        title: "message.basic.goods.goodsBrand",
         showLink: true,
         authority: []
       }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-let title = ref("Goods List");
+const title = ref("category");
 </script>
 <template>
   <div class="app-container">

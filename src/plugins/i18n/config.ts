@@ -46,11 +46,13 @@ export const menusConfig = {
       basic: {
         dial: "基础信息",
         goods: {
-          dial: "商品",
+          title: "商品",
+          dial: "基础统计",
           goodsList: "商品列表",
           goodsDetails: "商品详情",
           goodsLog: "修改日志",
-          goodsCategory: "商品类别"
+          goodsCategory: "商品类别",
+          goodsBrand: "商品品牌"
         },
         express: {
           expressCompanyList: "物流公司"

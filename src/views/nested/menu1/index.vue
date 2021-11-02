@@ -3,6 +3,8 @@
     <p>{{ $t("message.hsmenu1") }}</p>
     <router-view>
       <template #default="{ Component, route }">
+        {{ keepAlive }}{{ route.fullPath }}
+
         <transition appear name="fade-transform" mode="out-in">
           <keep-alive
             v-if="keepAlive"
