@@ -4,6 +4,7 @@ import { excludeProps } from "./utils";
  * 默认配置
  */
 export const defaultConfig: AxiosRequestConfig = {
+  //配置异步请求url
   baseURL: "",
   //10秒超时
   timeout: 10000,

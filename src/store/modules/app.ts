@@ -13,7 +13,7 @@ interface AppState {
 }
 
 export const useAppStore = defineStore({
-  id: "pure-app",
+  id: "app",
   state: (): AppState => ({
     sidebar: {
       opened: storageLocal.getItem("sidebarStatus")

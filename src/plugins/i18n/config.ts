@@ -31,6 +31,8 @@ export const menusConfig = {
       hsflowChart: "流程图",
       hsseamless: "无缝滚动",
       hscontextmenu: "右键菜单",
+      xeUtils: "xeUtils",
+      vxeTable: "vxeTable",
       hsmenus: "多级菜单",
       hsmenu1: "菜单1",
       "hsmenu1-1": "菜单1-1",

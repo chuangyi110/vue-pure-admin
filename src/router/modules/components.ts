@@ -114,6 +114,24 @@ const componentsRouter = {
         title: "message.hscontextmenu",
         showLink: true
       }
+    },
+    {
+      path: "/components/xe-utils",
+      name: "xeUtils",
+      component: () => import("/@/views/components/xe-utils/index.vue"),
+      meta: {
+        title: "message.xeUtils",
+        showLink: true
+      }
+    },
+    {
+      path: "/components/vxe-table",
+      name: "vxeTable",
+      component: () => import("/@/views/components/vxe-table/index.vue"),
+      meta: {
+        title: "message.vxeTable",
+        showLink: true
+      }
     }
   ]
 };
