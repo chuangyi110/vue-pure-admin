@@ -21,6 +21,7 @@ importers:
       "@vue/eslint-config-typescript": 7.0.0
       "@vueuse/core": ^6.7.1
       "@vueuse/motion": ^2.0.0-beta.4
+      "@vueuse/shared": ^6.7.1
       animate.css: ^4.1.1
       autoprefixer: 10.2.4
       await-to-js: ^3.0.0
@@ -87,6 +88,7 @@ importers:
       "@logicflow/extension": 0.7.1
       "@vueuse/core": 6.7.5_vue@3.2.21
       "@vueuse/motion": 2.0.0-beta.4_vue@3.2.21
+      "@vueuse/shared": 6.7.5_vue@3.2.21
       animate.css: 4.1.1
       await-to-js: 3.0.0
       axios: 0.21.4
