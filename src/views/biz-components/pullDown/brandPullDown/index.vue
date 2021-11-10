@@ -3,7 +3,7 @@ import { onMounted, reactive, ref, watch } from "vue";
 import { VxePulldownInstance } from "vxe-table";
 import { ItemVO } from "../../type";
 
-const data: ItemVO[] = [
+const result: ItemVO[] = [
   { label: "选项1", value: "1" },
   { label: "选项2", value: "2" },
   { label: "选项3", value: "3" },
@@ -17,15 +17,18 @@ const data: ItemVO[] = [
   { label: "选项11", value: "11" },
   { label: "选项12", value: "12" }
 ];
-const props = defineProps({
-  brandId: {
-    type: String,
-    default: ""
-  }
-});
-const brand = reactive({
-  value: props.brandId,
-  list: data
+// const props = defineProps({
+//   brandId: {
+//     type: String,
+//     default: ""
+//   }
+// });
+const props = defineProps<{
+  checkedItem: ItemVO;
+}>();
+const data = reactive({
+  value: props.checkedItem?.label,
+  list: result
 });
 
 const xDown = ref({} as VxePulldownInstance);
@@ -36,26 +39,29 @@ const focusEvent = () => {
 };
 
 const keyupEvent = () => {
-  brand.list = brand.value
-    ? data.filter(item => item.label.indexOf(brand.value) > -1)
-    : data;
+  data.list = data.value
+    ? result.filter(item => item.label.indexOf(data.value) > -1)
+    : result;
 };
 
 const selectEvent = item => {
   const $pulldown = xDown.value;
-  brand.value = item.label;
+  data.value = item.label;
   $pulldown.hidePanel().then(() => {
-    brand.list = data;
+    data.list = result;
   });
 };
 const emit = defineEmits<{
-  (e: "watchBrand", brandId): void;
+  (e: "watchBrand", checkedItem): void;
 }>();
 
 watch(
-  () => brand.value,
+  () => data.value,
   newValue => {
-    emit("watchBrand", newValue);
+    let filterReq = data.list.filter(e => e.label === newValue) || [];
+    if (filterReq.length > 0) {
+      emit("watchBrand", filterReq[0]);
+    }
   }
 );
 
@@ -67,14 +73,14 @@ onMounted(() => {});
     <template #default>
       <vxe-input
         span="24"
-        v-model="brand.value"
+        v-model="data.value"
         placeholder="输入搜索品牌"
         @focus="focusEvent"
         @keyup="keyupEvent"
       ></vxe-input>
     </template>
     <template #dropdown>
-      <vxe-list height="200" class="my-dropdown" :data="brand.list" auto-resize>
+      <vxe-list height="200" class="my-dropdown" :data="data.list" auto-resize>
         <template #default="{ items }">
           <div
             class="list-item"

@@ -3,22 +3,46 @@ import { store } from "/@/store";
 import { getAsyncBrandList } from "/@/api/common";
 
 interface CommonState {
-  brandArr: Array<any>;
-  categoryArr: Array<any>;
-  shopArr: Array<any>;
-  warehouseArr: Array<any>;
+  brandArr: {
+    version: Number;
+    data: Array<any>;
+  };
+  categoryArr: {
+    version: Number;
+    data: Array<any>;
+  };
+  shopArr: {
+    version: Number;
+    data: Array<any>;
+  };
+  warehouseArr: {
+    version: Number;
+    data: Array<any>;
+  };
 }
 export const useCommonStore = defineStore({
   id: "common",
   state: (): CommonState => ({
-    brandArr: [],
-    categoryArr: [],
-    shopArr: [],
-    warehouseArr: []
+    brandArr: {
+      version: 0,
+      data: []
+    },
+    categoryArr: {
+      version: 0,
+      data: []
+    },
+    shopArr: {
+      version: 0,
+      data: []
+    },
+    warehouseArr: {
+      version: 0,
+      data: []
+    }
   }),
   getters: {
     getBrandArr() {
-      return this.brandArr;
+      return this.brandArr.data;
     },
     getCategoryArr() {
       return this.categoryArr;

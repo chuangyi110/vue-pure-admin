@@ -5,16 +5,12 @@ import XEUtils from "xe-utils";
 import XEAjax from "xe-ajax";
 //@ts-ignore
 import brandPullDown from "/@/views/biz-components/pullDown/brandPullDown/index.vue";
+import { basicConf } from "/@/plugins/vxe-table/basicConf";
+import { goodsForm } from "./goodsParams";
 let title = ref("Goods List");
 const xGrid = ref({} as VxeGridInstance);
-
 const gridOptions = reactive<VxeGridProps>({
-  border: true,
-  resizable: true,
-  showHeaderOverflow: true,
-  showOverflow: true,
-  highlightHoverRow: true,
-  keepSource: true,
+  ...basicConf,
   id: "goods_list",
   height: 600,
   rowId: "id",
@@ -37,114 +33,13 @@ const gridOptions = reactive<VxeGridProps>({
       { field: "amount" }
     ]
   },
-  sortConfig: {
-    trigger: "cell",
-    remote: true
-  },
-  filterConfig: {
-    remote: true
-  },
-  pagerConfig: {
-    pageSize: 10,
-    pageSizes: [5, 10, 15, 20, 50, 100, 200, 500, 1000]
-  },
+
   formConfig: {
     titleWidth: 100,
     titleAlign: "center",
-    items: [
-      {
-        field: "name",
-        title: "名称",
-        span: 6,
-        titlePrefix: {
-          message: "app.body.valid.rName",
-          icon: "fa fa-exclamation-circle"
-        },
-        itemRender: { name: "$input", props: { placeholder: "请输入名称" } }
-      },
-      {
-        field: "email",
-        title: "邮件",
-        span: 6,
-        itemRender: { name: "$input", props: { placeholder: "请输入邮件" } }
-      },
-      {
-        field: "nickname",
-        title: "昵称",
-        span: 6,
-        itemRender: { name: "$input", props: { placeholder: "请输入昵称" } }
-      },
-      {
-        field: "role",
-        title: "角色",
-        span: 6,
-        itemRender: { name: "$input", props: { placeholder: "请输入角色" } }
-      },
-      {
-        field: "sex",
-        title: "性别",
-        span: 6,
-        folding: true,
-        titleSuffix: { message: "注意，必填信息！", icon: "fa fa-info-circle" },
-        itemRender: { name: "$select", options: [] }
-      },
-      {
-        field: "brand",
-        title: "品牌",
-        span: 6,
-        folding: true,
-        slots: { default: "pulldown2" }
-      },
-      {
-        field: "age",
-        title: "年龄",
-        span: 6,
-        folding: true,
-        itemRender: {
-          name: "$input",
-          props: { type: "number", min: 1, max: 120, placeholder: "请输入年龄" }
-        }
-      },
+    items: goodsForm
+  },
 
-      {
-        span: 24,
-        align: "center",
-        collapseNode: true,
-        itemRender: {
-          name: "$buttons",
-          children: [
-            {
-              props: {
-                type: "submit",
-                content: "搜索",
-                status: "primary"
-              }
-            },
-            { props: { type: "reset", content: "重置" } }
-          ]
-        }
-      }
-    ]
-  },
-  toolbarConfig: {
-    buttons: [
-      { code: "insert_actived", name: "新增", icon: "fa fa-plus" },
-      { code: "delete", name: "直接删除", icon: "fa fa-trash-o" },
-      { code: "mark_cancel", name: "删除/取消", icon: "fa fa-trash-o" },
-      {
-        code: "save",
-        name: "app.body.button.save",
-        icon: "fa fa-save",
-        status: "success"
-      }
-    ],
-    refresh: true,
-    import: true,
-    export: true,
-    print: true,
-    zoom: true,
-    custom: true
-  },
   proxyConfig: {
     seq: true, // 启用动态序号代理，每一页的序号会根据当前页数变化
     sort: true, // 启用排序代理，当点击排序时会自动触发 query 行为
@@ -159,6 +54,7 @@ const gridOptions = reactive<VxeGridProps>({
       // 接收 Promise
       query: ({ page, sorts, filters, form }) => {
         const queryParams: any = Object.assign({}, form);
+        console.log(form);
         // 处理排序条件
         const firstSort = sorts[0];
         if (firstSort) {
@@ -401,9 +297,284 @@ onMounted(() => {
     }
   }
 });
-
+//品牌搜索选择
+const brand = ref({ label: "选项12", value: "12" });
 const watchBrand = event => {
+  brand.value = event;
   console.log(event);
+};
+//分类选择
+const category = ref("");
+const options = ref([
+  {
+    value: "guide",
+    label: "Guide",
+    children: [
+      {
+        value: "disciplines",
+        label: "Disciplines",
+        children: [
+          {
+            value: "consistency",
+            label: "Consistency"
+          },
+          {
+            value: "feedback",
+            label: "Feedback"
+          },
+          {
+            value: "efficiency",
+            label: "Efficiency"
+          },
+          {
+            value: "controllability",
+            label: "Controllability"
+          }
+        ]
+      },
+      {
+        value: "navigation",
+        label: "Navigation",
+        children: [
+          {
+            value: "side nav",
+            label: "Side Navigation"
+          },
+          {
+            value: "top nav",
+            label: "Top Navigation"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    value: "component",
+    label: "Component",
+    children: [
+      {
+        value: "basic",
+        label: "Basic",
+        children: [
+          {
+            value: "layout",
+            label: "Layout"
+          },
+          {
+            value: "color",
+            label: "Color"
+          },
+          {
+            value: "typography",
+            label: "Typography"
+          },
+          {
+            value: "icon",
+            label: "Icon"
+          },
+          {
+            value: "button",
+            label: "Button"
+          }
+        ]
+      },
+      {
+        value: "form",
+        label: "Form",
+        children: [
+          {
+            value: "radio",
+            label: "Radio"
+          },
+          {
+            value: "checkbox",
+            label: "Checkbox"
+          },
+          {
+            value: "input",
+            label: "Input"
+          },
+          {
+            value: "input-number",
+            label: "InputNumber"
+          },
+          {
+            value: "select",
+            label: "Select"
+          },
+          {
+            value: "cascader",
+            label: "Cascader"
+          },
+          {
+            value: "switch",
+            label: "Switch"
+          },
+          {
+            value: "slider",
+            label: "Slider"
+          },
+          {
+            value: "time-picker",
+            label: "TimePicker"
+          },
+          {
+            value: "date-picker",
+            label: "DatePicker"
+          },
+          {
+            value: "datetime-picker",
+            label: "DateTimePicker"
+          },
+          {
+            value: "upload",
+            label: "Upload"
+          },
+          {
+            value: "rate",
+            label: "Rate"
+          },
+          {
+            value: "form",
+            label: "Form"
+          }
+        ]
+      },
+      {
+        value: "data",
+        label: "Data",
+        children: [
+          {
+            value: "table",
+            label: "Table"
+          },
+          {
+            value: "tag",
+            label: "Tag"
+          },
+          {
+            value: "progress",
+            label: "Progress"
+          },
+          {
+            value: "tree",
+            label: "Tree"
+          },
+          {
+            value: "pagination",
+            label: "Pagination"
+          },
+          {
+            value: "badge",
+            label: "Badge"
+          }
+        ]
+      },
+      {
+        value: "notice",
+        label: "Notice",
+        children: [
+          {
+            value: "alert",
+            label: "Alert"
+          },
+          {
+            value: "loading",
+            label: "Loading"
+          },
+          {
+            value: "message",
+            label: "Message"
+          },
+          {
+            value: "message-box",
+            label: "MessageBox"
+          },
+          {
+            value: "notification",
+            label: "Notification"
+          }
+        ]
+      },
+      {
+        value: "navigation",
+        label: "Navigation",
+        children: [
+          {
+            value: "menu",
+            label: "Menu"
+          },
+          {
+            value: "tabs",
+            label: "Tabs"
+          },
+          {
+            value: "breadcrumb",
+            label: "Breadcrumb"
+          },
+          {
+            value: "dropdown",
+            label: "Dropdown"
+          },
+          {
+            value: "steps",
+            label: "Steps"
+          }
+        ]
+      },
+      {
+        value: "others",
+        label: "Others",
+        children: [
+          {
+            value: "dialog",
+            label: "Dialog"
+          },
+          {
+            value: "tooltip",
+            label: "Tooltip"
+          },
+          {
+            value: "popover",
+            label: "Popover"
+          },
+          {
+            value: "card",
+            label: "Card"
+          },
+          {
+            value: "carousel",
+            label: "Carousel"
+          },
+          {
+            value: "collapse",
+            label: "Collapse"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    value: "resource",
+    label: "Resource",
+    children: [
+      {
+        value: "axure",
+        label: "Axure Components"
+      },
+      {
+        value: "sketch",
+        label: "Sketch Templates"
+      },
+      {
+        value: "docs",
+        label: "Design Documentation"
+      }
+    ]
+  }
+]);
+const handleChange = value => {
+  console.log(value, category.value);
 };
 </script>
 <template>
@@ -411,8 +582,18 @@ const watchBrand = event => {
     <h1>{{ title }}</h1>
     <vxe-grid ref="xGrid" v-bind="gridOptions">
       <template #pulldown2>
-        <brand-pull-down @watchBrand="watchBrand"></brand-pull-down>
+        <brand-pull-down @watchBrand="watchBrand" :checkedItem="brand" />
       </template>
+
+      <template #cascader>
+        <el-cascader
+          v-model="category"
+          :options="options"
+          @change="handleChange"
+          size="small"
+        />
+      </template>
+
       <template #operate="{ row }">
         <template v-if="$refs.xGrid.isActiveByRow(row)">
           <vxe-button

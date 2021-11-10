@@ -34,7 +34,8 @@ import {
   ElRadioGroup,
   ElDescriptions,
   ElDescriptionsItem,
-  ElBacktop
+  ElBacktop,
+  ElCascader
 } from "element-plus";
 
 const components = [
@@ -71,7 +72,8 @@ const components = [
   ElRadioGroup,
   ElDescriptions,
   ElDescriptionsItem,
-  ElBacktop
+  ElBacktop,
+  ElCascader
 ];
 
 const plugins = [ElLoading];
