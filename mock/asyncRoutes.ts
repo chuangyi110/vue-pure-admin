@@ -69,6 +69,7 @@ const goodsRoutes = {
   node: "2",
   meta: {
     title: "message.basic.goods.title",
+    icon: "Goods",
     showLink: true
   },
   children: [
@@ -77,6 +78,7 @@ const goodsRoutes = {
       name: "goodsDial",
       meta: {
         title: "message.basic.goods.dial",
+        icon: "Goods",
         showLink: true
       }
     },
@@ -85,6 +87,7 @@ const goodsRoutes = {
       name: "goodsList",
       meta: {
         title: "message.basic.goods.goodsList",
+        icon: "List",
         showLink: true
       }
     },
@@ -103,6 +106,7 @@ const goodsRoutes = {
       meta: {
         title: "message.basic.goods.goodsLog",
         showLink: true,
+        icon: "List",
         authority: []
       }
     },
@@ -159,7 +163,7 @@ const basicsRoutes = {
   redirect: "/basic/dial",
   meta: {
     title: "message.basic.dial",
-    icon: "el-icon-coin",
+    icon: "Coin",
     showLink: true,
     rank: 1
   },

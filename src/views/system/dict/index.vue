@@ -1,4 +1,5 @@
 <script setup lang="ts">
+//@ts-ignore
 import Config from "./config.vue";
 import { reactive, ref, unref, nextTick } from "vue";
 import XEUtils from "xe-utils";

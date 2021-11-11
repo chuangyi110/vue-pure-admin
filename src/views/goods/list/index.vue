@@ -4,10 +4,50 @@ import { VXETable, VxeGridInstance, VxeGridProps } from "vxe-table";
 import XEUtils from "xe-utils";
 import XEAjax from "xe-ajax";
 //@ts-ignore
-import brandPullDown from "/@/views/biz-components/pullDown/brandPullDown/index.vue";
+// import brandPullDownMultiple from "/@/views/biz-components/pullDown/brandPullDownMultiple/index.vue";
+
 import { basicConf } from "/@/plugins/vxe-table/basicConf";
-import { goodsForm } from "./goodsParams";
-let title = ref("Goods List");
+
+// let title = ref("Goods List");
+// let searchForm = reactive({
+//   brandIds: [],
+//   categories: [],
+//   goodsName: ""
+// });
+
+// watch(searchForm, n => {
+//   console.log(n);
+// });
+const categories = reactive([
+  {
+    value: "1",
+    label: "Guide",
+    children: [
+      {
+        value: "1-1",
+        label: "Disciplines"
+      },
+      {
+        value: "1-2",
+        label: "Navigation"
+      }
+    ]
+  }
+]);
+const brands = reactive([
+  {
+    value: "1",
+    label: "HTML"
+  },
+  {
+    value: "2",
+    label: "CSS"
+  },
+  {
+    value: "3",
+    label: "JavaScript"
+  }
+]);
 const xGrid = ref({} as VxeGridInstance);
 const gridOptions = reactive<VxeGridProps>({
   ...basicConf,
@@ -37,7 +77,99 @@ const gridOptions = reactive<VxeGridProps>({
   formConfig: {
     titleWidth: 100,
     titleAlign: "center",
-    items: goodsForm
+    items: [
+      {
+        field: "categories",
+        title: "分类",
+        span: 6,
+        itemRender: {
+          name: "ElCascader",
+          props: {
+            options: categories,
+            filterable: true,
+            // multiple: true,
+            checkStrictly: true,
+            size: "small"
+          }
+          // optionProps: { value: "value", label: "label" },
+          // defaultValue: ["1"]
+        }
+      },
+      {
+        field: "brandIds",
+        title: "品牌",
+        span: 6,
+        itemRender: {
+          name: "ElSelect",
+          props: {
+            multiple: true,
+            "multiple-limit": 2,
+            filterable: true,
+            "default-first-option": true,
+            placeholder: "请选择品牌",
+            size: "small"
+          },
+          options: brands
+          // optionProps: { value: "value", label: "label" }
+        }
+      },
+      {
+        field: "goodsName",
+        title: "商品名称",
+        span: 6,
+        itemRender: {
+          name: "$input",
+          props: { placeholder: "请输入名称" }
+        }
+      },
+      {
+        field: "defaultSku",
+        title: "默认商品",
+        span: 3,
+        itemRender: {
+          name: "$switch",
+          props: {
+            "open-label": "是",
+            "open-value": 1,
+            "close-label": "否",
+            "close-value": 0
+          },
+          defaultValue: 0
+        }
+      },
+      {
+        span: 24,
+        align: "center",
+        collapseNode: false,
+        itemRender: {
+          name: "$buttons",
+          children: [
+            {
+              props: {
+                type: "submit",
+                content: "搜索",
+                status: "primary"
+              }
+            },
+            {
+              props: {
+                type: "reset",
+                content: "重置"
+              }
+            }
+            // {
+            //   props: {
+            //     onclick: () => {
+            //       console.log(123123);
+            //     },
+            //     content: "重置2"
+            //   }
+            // }
+          ]
+        }
+      }
+    ]
+    // events: {},
   },
 
   proxyConfig: {
@@ -52,9 +184,10 @@ const gridOptions = reactive<VxeGridProps>({
     },
     ajax: {
       // 接收 Promise
-      query: ({ page, sorts, filters, form }) => {
+      query: obj => {
+        console.log(obj);
+        let { page, sorts, filters, form } = obj;
         const queryParams: any = Object.assign({}, form);
-        console.log(form);
         // 处理排序条件
         const firstSort = sorts[0];
         if (firstSort) {
@@ -81,13 +214,16 @@ const gridOptions = reactive<VxeGridProps>({
   },
   columns: [
     { type: "checkbox", title: "ID", width: 120 },
+    { type: "expand", fixed: "left", width: 40 },
     {
       field: "name",
       title: "Name",
       sortable: true,
+      width: 120,
       titleHelp: { message: "名称必须填写！" },
       editRender: { name: "input", attrs: { placeholder: "请输入名称" } }
     },
+
     {
       field: "role",
       title: "Role",
@@ -270,10 +406,16 @@ const gridOptions = reactive<VxeGridProps>({
     role: [{ required: true, message: "角色必须填写" }]
   },
   editConfig: {
-    trigger: "click",
+    activeMethod: () => false,
+    trigger: "dblclick",
     mode: "row",
     showStatus: true
   }
+  // treeConfig: {
+  //   transform: true,
+  //   rowField: "id",
+  //   parentField: "parentId"
+  // }
 });
 
 onMounted(() => {
@@ -291,309 +433,18 @@ onMounted(() => {
   }
   //查询字段
   if (formConfig && formConfig.items) {
-    const sexItem = formConfig.items[4];
+    const sexItem = formConfig.items[3];
     if (sexItem && sexItem.itemRender) {
       sexItem.itemRender.options = sexList;
     }
   }
 });
-//品牌搜索选择
-const brand = ref({ label: "选项12", value: "12" });
-const watchBrand = event => {
-  brand.value = event;
-  console.log(event);
-};
-//分类选择
-const category = ref("");
-const options = ref([
-  {
-    value: "guide",
-    label: "Guide",
-    children: [
-      {
-        value: "disciplines",
-        label: "Disciplines",
-        children: [
-          {
-            value: "consistency",
-            label: "Consistency"
-          },
-          {
-            value: "feedback",
-            label: "Feedback"
-          },
-          {
-            value: "efficiency",
-            label: "Efficiency"
-          },
-          {
-            value: "controllability",
-            label: "Controllability"
-          }
-        ]
-      },
-      {
-        value: "navigation",
-        label: "Navigation",
-        children: [
-          {
-            value: "side nav",
-            label: "Side Navigation"
-          },
-          {
-            value: "top nav",
-            label: "Top Navigation"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    value: "component",
-    label: "Component",
-    children: [
-      {
-        value: "basic",
-        label: "Basic",
-        children: [
-          {
-            value: "layout",
-            label: "Layout"
-          },
-          {
-            value: "color",
-            label: "Color"
-          },
-          {
-            value: "typography",
-            label: "Typography"
-          },
-          {
-            value: "icon",
-            label: "Icon"
-          },
-          {
-            value: "button",
-            label: "Button"
-          }
-        ]
-      },
-      {
-        value: "form",
-        label: "Form",
-        children: [
-          {
-            value: "radio",
-            label: "Radio"
-          },
-          {
-            value: "checkbox",
-            label: "Checkbox"
-          },
-          {
-            value: "input",
-            label: "Input"
-          },
-          {
-            value: "input-number",
-            label: "InputNumber"
-          },
-          {
-            value: "select",
-            label: "Select"
-          },
-          {
-            value: "cascader",
-            label: "Cascader"
-          },
-          {
-            value: "switch",
-            label: "Switch"
-          },
-          {
-            value: "slider",
-            label: "Slider"
-          },
-          {
-            value: "time-picker",
-            label: "TimePicker"
-          },
-          {
-            value: "date-picker",
-            label: "DatePicker"
-          },
-          {
-            value: "datetime-picker",
-            label: "DateTimePicker"
-          },
-          {
-            value: "upload",
-            label: "Upload"
-          },
-          {
-            value: "rate",
-            label: "Rate"
-          },
-          {
-            value: "form",
-            label: "Form"
-          }
-        ]
-      },
-      {
-        value: "data",
-        label: "Data",
-        children: [
-          {
-            value: "table",
-            label: "Table"
-          },
-          {
-            value: "tag",
-            label: "Tag"
-          },
-          {
-            value: "progress",
-            label: "Progress"
-          },
-          {
-            value: "tree",
-            label: "Tree"
-          },
-          {
-            value: "pagination",
-            label: "Pagination"
-          },
-          {
-            value: "badge",
-            label: "Badge"
-          }
-        ]
-      },
-      {
-        value: "notice",
-        label: "Notice",
-        children: [
-          {
-            value: "alert",
-            label: "Alert"
-          },
-          {
-            value: "loading",
-            label: "Loading"
-          },
-          {
-            value: "message",
-            label: "Message"
-          },
-          {
-            value: "message-box",
-            label: "MessageBox"
-          },
-          {
-            value: "notification",
-            label: "Notification"
-          }
-        ]
-      },
-      {
-        value: "navigation",
-        label: "Navigation",
-        children: [
-          {
-            value: "menu",
-            label: "Menu"
-          },
-          {
-            value: "tabs",
-            label: "Tabs"
-          },
-          {
-            value: "breadcrumb",
-            label: "Breadcrumb"
-          },
-          {
-            value: "dropdown",
-            label: "Dropdown"
-          },
-          {
-            value: "steps",
-            label: "Steps"
-          }
-        ]
-      },
-      {
-        value: "others",
-        label: "Others",
-        children: [
-          {
-            value: "dialog",
-            label: "Dialog"
-          },
-          {
-            value: "tooltip",
-            label: "Tooltip"
-          },
-          {
-            value: "popover",
-            label: "Popover"
-          },
-          {
-            value: "card",
-            label: "Card"
-          },
-          {
-            value: "carousel",
-            label: "Carousel"
-          },
-          {
-            value: "collapse",
-            label: "Collapse"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    value: "resource",
-    label: "Resource",
-    children: [
-      {
-        value: "axure",
-        label: "Axure Components"
-      },
-      {
-        value: "sketch",
-        label: "Sketch Templates"
-      },
-      {
-        value: "docs",
-        label: "Design Documentation"
-      }
-    ]
-  }
-]);
-const handleChange = value => {
-  console.log(value, category.value);
-};
 </script>
 <template>
   <div class="app-container">
     <h1>{{ title }}</h1>
+
     <vxe-grid ref="xGrid" v-bind="gridOptions">
-      <template #pulldown2>
-        <brand-pull-down @watchBrand="watchBrand" :checkedItem="brand" />
-      </template>
-
-      <template #cascader>
-        <el-cascader
-          v-model="category"
-          :options="options"
-          @change="handleChange"
-          size="small"
-        />
-      </template>
-
       <template #operate="{ row }">
         <template v-if="$refs.xGrid.isActiveByRow(row)">
           <vxe-button
@@ -622,49 +473,5 @@ const handleChange = value => {
         <vxe-button icon="fa fa-gear" title="设置" circle></vxe-button>
       </template>
     </vxe-grid>
-    <!-- <vxe-grid
-      border
-      highlight-hover-row
-      :columns="goodsColumns"
-      :proxy-config="proxyConfig"
-      :pager-config="tablePage"
-      :toolbar-config="toolbar"
-      :form-config="formConfig"
-      :edit-config="{
-        key: 'id',
-        trigger: 'click',
-        mode: 'row',
-        showStatus: true
-      }"
-    >
-      <template #operate="{ row }">
-        <template v-if="$refs.xGrid.isActiveByRow(row)">
-          <vxe-button
-            icon="fa fa-save"
-            status="primary"
-            title="保存"
-            circle
-            @click="saveRowEvent(row)"
-          ></vxe-button>
-        </template>
-        <template v-else>
-          <vxe-button
-            icon="fa fa-edit"
-            title="编辑"
-            circle
-            @click="editRowEvent(row)"
-          ></vxe-button>
-        </template>
-
-        <vxe-button
-          icon="fa fa-trash"
-          title="删除"
-          circle
-          @click="removeRowEvent(row)"
-        />
-        <vxe-button icon="fa fa-eye" title="查看" circle></vxe-button>
-        <vxe-button icon="fa fa-gear" title="设置" circle></vxe-button>
-      </template>
-    </vxe-grid> -->
   </div>
 </template>

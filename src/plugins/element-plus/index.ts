@@ -1,7 +1,7 @@
 import { App, Component } from "vue";
 import {
   ElTag,
-  ElAffix,
+  // ElAffix,
   ElSkeleton,
   ElBreadcrumb,
   ElBreadcrumbItem,
@@ -9,6 +9,7 @@ import {
   ElSubMenu,
   ElButton,
   ElCol,
+  ElCheckbox,
   ElRow,
   ElSpace,
   ElDivider,
@@ -21,6 +22,8 @@ import {
   ElDropdownMenu,
   ElIcon,
   ElInput,
+  ElSelect,
+  ElOption,
   ElForm,
   ElFormItem,
   ElLoading,
@@ -55,12 +58,15 @@ import {
   RefreshRight,
   ArrowDown,
   Close,
-  CloseBold
+  CloseBold,
+  Coin,
+  Goods,
+  List
 } from "@element-plus/icons";
 
 const components = [
   ElTag,
-  ElAffix,
+  // ElAffix,
   ElSkeleton,
   ElBreadcrumb,
   ElBreadcrumbItem,
@@ -68,6 +74,7 @@ const components = [
   ElSubMenu,
   ElButton,
   ElCol,
+  ElCheckbox,
   ElRow,
   ElSpace,
   ElDivider,
@@ -80,6 +87,8 @@ const components = [
   ElDropdownMenu,
   ElIcon,
   ElInput,
+  ElSelect,
+  ElOption,
   ElForm,
   ElFormItem,
   ElPopover,
@@ -110,7 +119,10 @@ const components = [
   RefreshRight,
   ArrowDown,
   Close,
-  CloseBold
+  CloseBold,
+  Coin,
+  Goods,
+  List
 ];
 
 const plugins = [ElLoading];

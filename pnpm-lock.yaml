@@ -20,6 +20,7 @@ specifiers:
   "@vue/eslint-config-typescript": 7.0.0
   "@vueuse/core": ^6.7.1
   "@vueuse/motion": ^2.0.0-beta.4
+  "@vueuse/shared": ^6.7.1
   "@zougt/vite-plugin-theme-preprocessor": ^1.3.10
   animate.css: ^4.1.1
   autoprefixer: 10.2.4
@@ -76,7 +77,8 @@ specifiers:
   vue-router: ^4.0.11
   vue-types: ^4.1.0
   vuedraggable: 4.1.0
-  vxe-table: 4.0.30
+  vxe-table: 4.1.5
+  vxe-table-plugin-element: ^3.0.5
   wangeditor: 4.7.7
   xe-ajax: 4.0.5
   xe-utils: 3.4.0
@@ -89,6 +91,7 @@ dependencies:
   "@logicflow/extension": 0.7.1
   "@vueuse/core": 6.7.5_vue@3.2.21
   "@vueuse/motion": 2.0.0-beta.4_vue@3.2.21
+  "@vueuse/shared": 6.7.5_vue@3.2.21
   animate.css: 4.1.1
   await-to-js: 3.0.0
   axios: 0.21.4
@@ -117,7 +120,8 @@ dependencies:
   vue-router: 4.0.12_vue@3.2.21
   vue-types: 4.1.1_vue@3.2.21
   vuedraggable: 4.1.0_vue@3.2.21
-  vxe-table: 4.0.30_vue@3.2.21+xe-utils@3.4.0
+  vxe-table: 4.1.5_vue@3.2.21+xe-utils@3.4.0
+  vxe-table-plugin-element: 3.0.5_vxe-table@4.1.5
   wangeditor: 4.7.7
   xe-ajax: 4.0.5
   xe-utils: 3.4.0
@@ -6760,10 +6764,21 @@ packages:
       vue: 3.2.21
     dev: false
 
-  /vxe-table/4.0.30_vue@3.2.21+xe-utils@3.4.0:
+  /vxe-table-plugin-element/3.0.5_vxe-table@4.1.5:
     resolution:
       {
-        integrity: sha512-sHUJL+XazADSTJlAZDwIAVeOMB3hBSj+5IeAUKHH+eKmSYju+l31og7NbgYsgRVTpG959F9EpUOnMMXvWptq/w==
+        integrity: sha512-keZJIEraJix+ZqRJY0ud5usTPU6KfcizkTLJzUZsYjms6A+HwOZ24FDczGcEvO6hbPofeROWySlf9K7Dg687ew==
+      }
+    peerDependencies:
+      vxe-table: ^4.0.30
+    dependencies:
+      vxe-table: 4.1.5_vue@3.2.21+xe-utils@3.4.0
+    dev: false
+
+  /vxe-table/4.1.5_vue@3.2.21+xe-utils@3.4.0:
+    resolution:
+      {
+        integrity: sha512-D9LOPvnFqiBplhKhohTmxVfPXb2hXq3J/q4NoxLL/4GJHljbvyvgTGOqtjvUMWynGgkPDjBzZDevOgXUCPAHsw==
       }
     peerDependencies:
       vue: ^3.2.2

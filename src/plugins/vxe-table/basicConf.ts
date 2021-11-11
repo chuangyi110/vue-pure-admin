@@ -9,6 +9,7 @@ export const basicConf = <VxeTableProps>{
   showOverflow: true,
   highlightHoverRow: true,
   keepSource: true,
+  stripe: true,
   sortConfig: {
     trigger: "cell",
     remote: true
@@ -27,7 +28,7 @@ export const basicConf = <VxeTableProps>{
       { code: "mark_cancel", name: "删除/取消", icon: "fa fa-trash-o" },
       {
         code: "save",
-        name: "app.body.button.save",
+        name: "保存",
         icon: "fa fa-save",
         status: "success"
       }
