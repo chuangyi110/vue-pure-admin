@@ -1,4 +1,5 @@
 import { VxeTableProps } from "vxe-table";
+import { useAppStoreHook } from "/@/store/modules/app";
 /**
  * 基础配置信息
  */
@@ -41,6 +42,17 @@ export const basicConf = <VxeTableProps>{
     custom: true
   }
 };
+export const inputSpan = (): number => {
+  switch (useAppStoreHook().getDevice) {
+    case "mobile":
+      return 24;
+    case "desktop":
+      return 6;
+    case "pad":
+      return 12;
+  }
+};
+
 //unused
 export const printConfig = (arr: Array<String>) => {
   const columns = arr.forEach(ele => {

@@ -6,7 +6,38 @@ const brandList = () => {
     { label: "品牌3", value: "3" }
   ];
 };
+// const categoryList = () => {
+//   return [
+//     {
+//       value: "1",
+//       label: "Guide",
+//       children: [
+//         {
+//           value: "1-1",
+//           label: "Disciplines"
+//         },
+//         {
+//           value: "1-2",
+//           label: "Navigation"
+//         }
+//       ]
+//     }
+//   ];
+// };
 
+const categoryList = () => {
+  return [
+    {
+      label: "奶粉",
+      value: "1",
+      children: [
+        { label: "一段", value: "11" },
+        { label: "二段", value: "12" }
+      ]
+    },
+    { label: "补剂", value: "2" }
+  ];
+};
 export default [
   {
     url: "/api/v1/erp/getBrandList",
@@ -14,7 +45,23 @@ export default [
     response: () => {
       return {
         code: 0,
-        info: brandList()
+        info: {
+          version: 1,
+          data: brandList()
+        }
+      };
+    }
+  },
+  {
+    url: "/api/v1/erp/getCategoryList",
+    method: "get",
+    response: () => {
+      return {
+        code: 0,
+        info: {
+          version: 1,
+          data: categoryList()
+        }
       };
     }
   }

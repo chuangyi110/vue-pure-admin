@@ -13,11 +13,12 @@ const homeRouter = {
   children: [
     {
       path: "/welcome",
-      name: "welcome",
+      name: "/welcome",
       component: () => import("/@/views/welcome.vue"),
       meta: {
         title: "message.hshome",
-        showLink: true
+        showLink: true,
+        keepAlive: true
       }
     }
   ]

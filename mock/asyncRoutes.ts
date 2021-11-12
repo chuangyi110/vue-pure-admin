@@ -63,7 +63,7 @@ const permissionRouter = {
   ]
 };
 const goodsRoutes = {
-  path: "/goods",
+  path: "/basic/goods",
   name: "goods",
   redirect: "/goods/dial",
   node: "2",
@@ -74,57 +74,63 @@ const goodsRoutes = {
   },
   children: [
     {
-      path: "/goods/dial",
+      path: "/basic/goods/dial",
       name: "goodsDial",
       meta: {
         title: "message.basic.goods.dial",
         icon: "Goods",
-        showLink: true
+        showLink: true,
+        keepAlive: true
       }
     },
     {
-      path: "/goods/list",
+      path: "/basic/goods/list",
       name: "goodsList",
       meta: {
         title: "message.basic.goods.goodsList",
         icon: "List",
-        showLink: true
+        showLink: true,
+        keepAlive: true
       }
     },
     {
-      path: "/goods/details",
+      path: "/basic/goods/details",
       name: "goodsDetails",
       meta: {
         title: "message.basic.goods.goodsDetails",
         showLink: false,
+        keepAlive: true,
         authority: []
       }
     },
     {
-      path: "/goods/log",
-      name: "goodsLog",
+      path: "/basic/goods/log",
+      name: "/basic/goods/log",
       meta: {
         title: "message.basic.goods.goodsLog",
         showLink: true,
+        keepAlive: true,
         icon: "List",
         authority: []
       }
     },
     {
-      path: "/goods/category",
+      path: "/basic/goods/category",
       name: "category",
       meta: {
         title: "message.basic.goods.goodsCategory",
         showLink: true,
+        keepAlive: true,
         authority: []
       }
     },
     {
-      path: "/goods/brand",
+      path: "/basic/goods/brand",
       name: "brand",
       meta: {
         title: "message.basic.goods.goodsBrand",
         showLink: true,
+        keepAlive: true,
         authority: []
       }
     }
@@ -171,7 +177,10 @@ const basicsRoutes = {
     {
       path: "/basic/dial",
       name: "basicDial",
-      meta: { title: "message.basic.dial", showLink: false }
+      meta: {
+        title: "message.basic.dial",
+        showLink: true
+      }
     },
     goodsRoutes,
     expressRoutes

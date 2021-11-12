@@ -456,6 +456,7 @@ onBeforeMount(() => {
 
   //  接收侧边栏切换传递过来的参数
   emitter.on("changLayoutRoute", ({ indexPath, parentPath }) => {
+    console.log(indexPath, parentPath);
     dynamicRouteTag(indexPath, parentPath);
     setTimeout(() => {
       showMenuModel(indexPath);

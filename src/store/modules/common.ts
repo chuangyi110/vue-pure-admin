@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { store } from "/@/store";
-import { getAsyncBrandList } from "/@/api/common";
-
+import { getAsyncBrandList, getAsyncCategoryList } from "/@/api/common";
 interface CommonState {
   brandArr: {
     version: Number;
@@ -42,18 +41,46 @@ export const useCommonStore = defineStore({
   }),
   getters: {
     getBrandArr() {
+      if (!this.brandArr.version) {
+        this.initBrandList();
+      }
       return this.brandArr.data;
     },
     getCategoryArr() {
-      return this.categoryArr;
+      if (!this.categoryArr.version) {
+        this.initCategoryList();
+      }
+      return this.categoryArr.data;
     }
   },
   actions: {
     asyncGetBrand() {
       return getAsyncBrandList();
     },
-    async initBrandList() {
-      this.brandArr = await this.asyncGetBrand();
+    initBrandList() {
+      this.asyncGetBrand().then(
+        res => {
+          // console.log(res);
+          this.brandArr = { ...res.info };
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    asyncGetCategory() {
+      return getAsyncCategoryList();
+    },
+    initCategoryList() {
+      this.asyncGetCategory().then(
+        res => {
+          // console.log(res);
+          this.categoryArr = { ...res.info };
+        },
+        err => {
+          console.log(err);
+        }
+      );
     }
   }
 });

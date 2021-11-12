@@ -31,7 +31,7 @@ export const useAppStore = defineStore({
     getSidebarStatus() {
       return this.sidebar.opened;
     },
-    getDevice() {
+    getDevice(): string {
       return this.device;
     }
   },

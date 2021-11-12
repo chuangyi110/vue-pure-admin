@@ -28,10 +28,13 @@ let greetings = computed(() => {
 const openDepot = (): void => {
   window.open("https://github.com/xiaoxian521/vue-pure-admin");
 };
+
+const name = ref("");
 </script>
 
 <template>
   <div class="welcome">
+    <el-input v-model="name" placeholder="请输入" />
     <el-card class="top-content">
       <div class="left-mark">
         <img

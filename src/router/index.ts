@@ -180,7 +180,7 @@ export const initRouter = name => {
         });
       }
       console.log(router);
-      console.log(modulesRoutes);
+      // console.log(modulesRoutes);
       router.addRoute({
         path: "/:pathMatch(.*)",
         redirect: "/error/404"
@@ -237,6 +237,7 @@ router.beforeEach((to, _from, next) => {
             "responsive-routesInStorage"
           );
           const optionsRoutes = router.options?.routes;
+          console.log(optionsRoutes, localRoutes);
           const newLocalRoutes = [];
           optionsRoutes.forEach(ors => {
             localRoutes.forEach(lrs => {
