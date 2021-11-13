@@ -237,7 +237,6 @@ router.beforeEach((to, _from, next) => {
             "responsive-routesInStorage"
           );
           const optionsRoutes = router.options?.routes;
-          console.log(optionsRoutes, localRoutes);
           const newLocalRoutes = [];
           optionsRoutes.forEach(ors => {
             localRoutes.forEach(lrs => {

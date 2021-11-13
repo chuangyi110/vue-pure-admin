@@ -1,21 +1,23 @@
 import { defineStore } from "pinia";
 import { store } from "/@/store";
 import { getAsyncBrandList, getAsyncCategoryList } from "/@/api/common";
+import XEUtils from "xe-utils";
+//timestamp
 interface CommonState {
   brandArr: {
-    version: Number;
+    timestamp: Number;
     data: Array<any>;
   };
   categoryArr: {
-    version: Number;
+    timestamp: Number;
     data: Array<any>;
   };
   shopArr: {
-    version: Number;
+    timestamp: Number;
     data: Array<any>;
   };
   warehouseArr: {
-    version: Number;
+    timestamp: Number;
     data: Array<any>;
   };
 }
@@ -23,31 +25,31 @@ export const useCommonStore = defineStore({
   id: "common",
   state: (): CommonState => ({
     brandArr: {
-      version: 0,
+      timestamp: 0,
       data: []
     },
     categoryArr: {
-      version: 0,
+      timestamp: 0,
       data: []
     },
     shopArr: {
-      version: 0,
+      timestamp: 0,
       data: []
     },
     warehouseArr: {
-      version: 0,
+      timestamp: 0,
       data: []
     }
   }),
   getters: {
     getBrandArr() {
-      if (!this.brandArr.version) {
+      if (!this.brandArr.timestamp) {
         this.initBrandList();
       }
       return this.brandArr.data;
     },
     getCategoryArr() {
-      if (!this.categoryArr.version) {
+      if (!this.categoryArr.timestamp) {
         this.initCategoryList();
       }
       return this.categoryArr.data;
@@ -60,8 +62,10 @@ export const useCommonStore = defineStore({
     initBrandList() {
       this.asyncGetBrand().then(
         res => {
-          // console.log(res);
-          this.brandArr = { ...res.info };
+          this.brandArr = {
+            timestamp: XEUtils.timestamp(new Date()),
+            data: res.data
+          };
         },
         err => {
           console.log(err);
@@ -75,7 +79,10 @@ export const useCommonStore = defineStore({
       this.asyncGetCategory().then(
         res => {
           // console.log(res);
-          this.categoryArr = { ...res.info };
+          this.categoryArr = {
+            timestamp: XEUtils.timestamp(new Date()),
+            data: res.data
+          };
         },
         err => {
           console.log(err);

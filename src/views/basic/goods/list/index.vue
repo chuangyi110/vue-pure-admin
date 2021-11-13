@@ -15,6 +15,12 @@ import {
 } from "/@/plugins/vxe-table/basicConf";
 import { useCommonStoreHook } from "/@/store/modules/common";
 const title = ref("goods_list");
+const defaultForm = reactive({
+  categories: ["1", "11"],
+  brandIds: ["2"],
+  goodsName: "123123",
+  defaultSku: 1
+});
 const categories = computed((): any[] => useCommonStoreHook().getCategoryArr);
 const brands = computed((): any[] => useCommonStoreHook().getBrandArr);
 
@@ -99,7 +105,8 @@ const gridOptions = reactive<VxeGridProps>({
             options: categories,
             filterable: true,
             size: "small"
-          }
+          },
+          defaultValue: defaultForm.categories
         }
       },
       {
@@ -118,7 +125,8 @@ const gridOptions = reactive<VxeGridProps>({
           },
           //@ts-ignore
           options: brands,
-          optionProps: { value: "value", label: "label" }
+          optionProps: { value: "value", label: "label" },
+          defaultValue: defaultForm.brandIds
         }
       },
       {
@@ -127,7 +135,10 @@ const gridOptions = reactive<VxeGridProps>({
         span: inputSpan(),
         itemRender: {
           name: "$input",
-          props: { placeholder: "请输入名称" }
+          props: {
+            placeholder: "请输入名称"
+          },
+          defaultValue: defaultForm.goodsName
         }
       },
       {
@@ -142,7 +153,7 @@ const gridOptions = reactive<VxeGridProps>({
             "close-label": "否",
             "close-value": 0
           },
-          defaultValue: 0
+          defaultValue: defaultForm.defaultSku
         }
       },
       {
@@ -275,7 +286,6 @@ const gridOptions = reactive<VxeGridProps>({
     },
     {
       title: "操作",
-      width: 200,
       slots: { default: "operate" },
       fixed: "right"
     }
@@ -375,14 +385,13 @@ const gridOptions = reactive<VxeGridProps>({
     ],
     email: [{ required: true, message: "邮件必须填写" }],
     role: [{ required: true, message: "角色必须填写" }]
-  },
+  }
 
   // treeConfig: {
   //   transform: true,
   //   rowField: "id",
   //   parentField: "parentId"
   // }
-  screenY: { enabled: false }
 });
 onMounted(() => {
   const sexList = [

@@ -157,7 +157,7 @@ const expressRoutes = {
       path: "/express/route",
       name: "expressRoute",
       meta: {
-        title: "expressRouter",
+        title: "message.basic.express.expressRouter",
         showLink: true
       }
     }

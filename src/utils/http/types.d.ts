@@ -48,3 +48,16 @@ export default class EnclosureHttp {
     config?: EnclosureHttpRequestConfig
   ): Promise<T>;
 }
+
+export type Request<T> = {
+  code: Number;
+  message: String;
+  data:
+    | T
+    | {
+        records: Array<T>;
+        totalCount: Number;
+        pageNo: Number;
+        pageSize: Number;
+      };
+};

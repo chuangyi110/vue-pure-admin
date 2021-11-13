@@ -57,7 +57,8 @@ export const menusConfig = {
           goodsBrand: "商品品牌"
         },
         express: {
-          expressCompanyList: "物流公司"
+          expressCompanyList: "物流公司",
+          expressRouter: "物流线路"
         }
       }
     }

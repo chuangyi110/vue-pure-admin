@@ -45,10 +45,7 @@ export default [
     response: () => {
       return {
         code: 0,
-        info: {
-          version: 1,
-          data: brandList()
-        }
+        data: brandList()
       };
     }
   },
@@ -58,9 +55,19 @@ export default [
     response: () => {
       return {
         code: 0,
-        info: {
+        data: categoryList()
+      };
+    }
+  },
+  {
+    url: "/api/v1/erp/getShop",
+    method: "get",
+    response: () => {
+      return {
+        code: 0,
+        data: {
           version: 1,
-          data: categoryList()
+          list: []
         }
       };
     }
