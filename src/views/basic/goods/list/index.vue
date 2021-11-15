@@ -23,9 +23,8 @@ const defaultForm = reactive({
 });
 const categories = computed((): any[] => useCommonStoreHook().getCategoryArr);
 const brands = computed((): any[] => useCommonStoreHook().getBrandArr);
-
+const printParams = reactive(["name", "email"]);
 const tableQuery = (params: VxeGridPropTypes.ProxyAjaxQueryParams) => {
-  console.log(params);
   let { page, sorts, filters, form } = params;
   const queryParams: any = Object.assign({}, form);
   // 处理排序条件
@@ -60,7 +59,7 @@ const tableSave = (params: VxeGridPropTypes.ProxyAjaxSaveParams) => {
 
 const goodsConf = reactive(
   XEUtils.merge(basicConf, {
-    toolbarConfig: { refresh: false },
+    toolbarConfig: { refresh: true, import: false },
     proxyConfig: {
       ajax: {
         // 接收 Promise
@@ -84,13 +83,10 @@ const gridOptions = reactive<VxeGridProps>({
   customConfig: {
     storage: true,
     checkMethod({ column }) {
-      if (["nickname", "role"].includes(column.property)) {
-        return false;
-      }
-      return true;
+      return !["nickname", "role"].includes(column.property);
     }
   },
-  printConfig: printConfig(["name", "email"]),
+  printConfig: printConfig(printParams),
   formConfig: {
     titleWidth: 100,
     titleAlign: "center",
@@ -198,16 +194,16 @@ const gridOptions = reactive<VxeGridProps>({
     {
       field: "name",
       title: "Name",
-      sortable: true,
+      // sortable: true,
       width: 120,
       titleHelp: { message: "名称必须填写！" },
       editRender: { name: "input", attrs: { placeholder: "请输入名称" } }
     },
-
     {
       field: "role",
       title: "Role",
       sortable: true,
+      width: 120,
       filters: [
         { label: "前端开发", value: "前端" },
         { label: "后端开发", value: "后端" },
@@ -227,6 +223,11 @@ const gridOptions = reactive<VxeGridProps>({
       field: "nickname",
       title: "Nickname",
       editRender: { name: "input", attrs: { placeholder: "请输入昵称" } }
+    },
+    {
+      title: "状态",
+      width: 200,
+      slots: { default: "goodsStatus" }
     },
     {
       field: "sex",
@@ -264,16 +265,16 @@ const gridOptions = reactive<VxeGridProps>({
         props: { type: "float", digits: 2, placeholder: "请输入数值" }
       }
     },
-    {
-      field: "updateDate",
-      title: "Update Date",
-      width: 160,
-      visible: false,
-      sortable: true,
-      formatter({ cellValue }) {
-        return XEUtils.toDateString(cellValue, "yyyy-MM-dd HH:ss:mm");
-      }
-    },
+    // {
+    //   field: "updateDate",
+    //   title: "Update Date",
+    //   width: 160,
+    //   visible: false,
+    //   sortable: true,
+    //   formatter({ cellValue }) {
+    //     return XEUtils.toDateString(cellValue, "yyyy-MM-dd HH:ss:mm");
+    //   }
+    // },
     {
       field: "createDate",
       title: "Create Date",
@@ -286,6 +287,7 @@ const gridOptions = reactive<VxeGridProps>({
     },
     {
       title: "操作",
+      width: 200,
       slots: { default: "operate" },
       fixed: "right"
     }
@@ -419,6 +421,11 @@ onMounted(() => {
   <div class="app-container">
     <h1>{{ title }}</h1>
     <vxe-grid ref="xGrid" v-bind="gridOptions">
+      <template #goodsStatus="{ row }">
+        <div class="label-ellipsis">{{ row.name }}123</div>
+        <div class="label-ellipsis">456</div>
+        <div class="label-ellipsis">789</div>
+      </template>
       <template #operate="{ row }">
         <template v-if="$refs.xGrid.isActiveByRow(row)">
           <vxe-button

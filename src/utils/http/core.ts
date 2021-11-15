@@ -1,5 +1,5 @@
 import Axios, {
-  AxiosRequestConfig,
+  // AxiosRequestConfig,
   CancelTokenStatic,
   AxiosInstance
 } from "axios";
@@ -15,7 +15,8 @@ import {
   RequestMethods,
   EnclosureHttpRequestConfig,
   EnclosureHttpResoponse,
-  EnclosureHttpError
+  EnclosureHttpError,
+  ResBody
 } from "./types.d";
 
 class EnclosureHttp {
@@ -192,12 +193,13 @@ class EnclosureHttp {
     );
   }
 
-  public request<T>(
+  public request<T, T2>(
     method: RequestMethods,
     url: string,
-    param?: AxiosRequestConfig,
+    // param?: AxiosRequestConfig,
+    param?: T,
     axiosConfig?: EnclosureHttpRequestConfig
-  ): Promise<T> {
+  ): Promise<ResBody<T2>> {
     const config = transformConfigByMethod(param, {
       method,
       url,
@@ -216,20 +218,20 @@ class EnclosureHttp {
     });
   }
 
-  public post<T>(
+  public post<T, T2>(
     url: string,
     params?: T,
     config?: EnclosureHttpRequestConfig
-  ): Promise<T> {
-    return this.request<T>("post", url, params, config);
+  ): Promise<ResBody<T2>> {
+    return this.request<T, T2>("post", url, params, config);
   }
 
-  public get<T>(
+  public get<T, T2>(
     url: string,
     params?: T,
     config?: EnclosureHttpRequestConfig
-  ): Promise<T> {
-    return this.request<T>("get", url, params, config);
+  ): Promise<ResBody<T2>> {
+    return this.request<T, T2>("get", url, params, config);
   }
 }
 

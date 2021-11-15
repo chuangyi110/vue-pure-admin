@@ -119,7 +119,6 @@ export const handleAliveRoute = (
 export const addAsyncRoutes = (arrRoutes: Array<RouteComponent>) => {
   if (!arrRoutes || !arrRoutes.length) return;
   arrRoutes.forEach((v: any) => {
-    console.log(v);
     if (v.redirect) {
       v.component = Layout;
       if (v.node > 1) {
@@ -179,7 +178,6 @@ export const initRouter = name => {
           resolve(router);
         });
       }
-      console.log(router);
       // console.log(modulesRoutes);
       router.addRoute({
         path: "/:pathMatch(.*)",

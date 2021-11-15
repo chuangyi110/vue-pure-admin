@@ -49,11 +49,12 @@ export default class EnclosureHttp {
   ): Promise<T>;
 }
 
-export type Request<T> = {
+export type ResBody<T = any> = {
   code: Number;
-  message: String;
+  message: string;
   data:
     | T
+    | T[]
     | {
         records: Array<T>;
         totalCount: Number;

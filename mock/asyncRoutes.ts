@@ -68,7 +68,7 @@ const goodsRoutes = {
   redirect: "/goods/dial",
   node: "2",
   meta: {
-    title: "message.basic.goods.title",
+    title: "message.basic.goods.library",
     icon: "Goods",
     showLink: true
   },
@@ -87,7 +87,7 @@ const goodsRoutes = {
       path: "/basic/goods/list",
       name: "goodsList",
       meta: {
-        title: "message.basic.goods.goodsList",
+        title: "message.basic.goods.goodsLibList",
         icon: "List",
         showLink: true,
         keepAlive: true
@@ -121,6 +121,7 @@ const goodsRoutes = {
         title: "message.basic.goods.goodsCategory",
         showLink: true,
         keepAlive: true,
+        icon: "List",
         authority: []
       }
     },
@@ -131,6 +132,7 @@ const goodsRoutes = {
         title: "message.basic.goods.goodsBrand",
         showLink: true,
         keepAlive: true,
+        icon: "List",
         authority: []
       }
     }
@@ -179,6 +181,7 @@ const basicsRoutes = {
       name: "basicDial",
       meta: {
         title: "message.basic.dial",
+        icon: "Coin",
         showLink: true
       }
     },

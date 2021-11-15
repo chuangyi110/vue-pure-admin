@@ -1,24 +1,30 @@
 import { defineStore } from "pinia";
 import { store } from "/@/store";
-import { getAsyncBrandList, getAsyncCategoryList } from "/@/api/common";
+import {
+  getAsyncBrandList,
+  addBrand,
+  getAsyncCategoryList
+} from "/@/api/common";
 import XEUtils from "xe-utils";
+import { OptType } from "/@/api/type";
+import { ResBody } from "/@/utils/http/types";
 //timestamp
 interface CommonState {
   brandArr: {
     timestamp: Number;
-    data: Array<any>;
+    data: Array<OptType>;
   };
   categoryArr: {
     timestamp: Number;
-    data: Array<any>;
+    data: Array<OptType>;
   };
   shopArr: {
     timestamp: Number;
-    data: Array<any>;
+    data: Array<OptType>;
   };
   warehouseArr: {
     timestamp: Number;
-    data: Array<any>;
+    data: Array<OptType>;
   };
 }
 export const useCommonStore = defineStore({
@@ -61,7 +67,7 @@ export const useCommonStore = defineStore({
     },
     initBrandList() {
       this.asyncGetBrand().then(
-        res => {
+        (res: ResBody<OptType>) => {
           this.brandArr = {
             timestamp: XEUtils.timestamp(new Date()),
             data: res.data
@@ -72,6 +78,14 @@ export const useCommonStore = defineStore({
         }
       );
     },
+    addBrand(data) {
+      addBrand(data).then((res: ResBody) => {
+        if (res.code) {
+          this.initBrandList();
+        }
+      });
+    },
+
     asyncGetCategory() {
       return getAsyncCategoryList();
     },

@@ -4,10 +4,10 @@ import { useAppStoreHook } from "/@/store/modules/app";
  * 基础配置信息
  */
 export const basicConf = <VxeTableProps>{
-  border: true,
+  border: true, //边框
   resizable: true,
   showHeaderOverflow: true,
-  showOverflow: true,
+  showOverflow: false, //设置所有内容过长时显示为省略号（如果是固定列建议设置该值，提升渲染速度）
   highlightHoverRow: true,
   keepSource: true,
   stripe: true,
@@ -25,14 +25,19 @@ export const basicConf = <VxeTableProps>{
   toolbarConfig: {
     buttons: [
       { code: "insert_actived", name: "新增", icon: "fa fa-plus" },
-      { code: "delete", name: "直接删除", icon: "fa fa-trash-o" },
-      { code: "mark_cancel", name: "删除/取消", icon: "fa fa-trash-o" },
       {
-        code: "save",
-        name: "保存",
-        icon: "fa fa-save",
-        status: "success"
+        code: "delete",
+        name: "批量删除",
+        icon: "fa fa-trash-o",
+        status: "warning"
       }
+      // { code: "mark_cancel", name: "删除/取消", icon: "fa fa-trash-o" },
+      // {
+      //   code: "save",
+      //   name: "保存",
+      //   icon: "fa fa-save",
+      //   status: "success"
+      // }
     ],
     refresh: true,
     import: true,
@@ -48,7 +53,7 @@ export const basicConf = <VxeTableProps>{
     range: true
   },
   editConfig: {
-    activeMethod: () => false,
+    // activeMethod: () => false,
     trigger: "dblclick",
     mode: "row",
     showStatus: true
@@ -63,6 +68,9 @@ export const basicConf = <VxeTableProps>{
       result: "result", // 配置响应结果列表字段
       total: "page.total" // 配置响应结果总页数字段
     }
+  },
+  scrollY: {
+    enabled: false
   }
 };
 export const inputSpan = (): number => {

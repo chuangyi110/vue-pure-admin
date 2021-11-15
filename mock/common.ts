@@ -6,24 +6,6 @@ const brandList = () => {
     { label: "品牌3", value: "3" }
   ];
 };
-// const categoryList = () => {
-//   return [
-//     {
-//       value: "1",
-//       label: "Guide",
-//       children: [
-//         {
-//           value: "1-1",
-//           label: "Disciplines"
-//         },
-//         {
-//           value: "1-2",
-//           label: "Navigation"
-//         }
-//       ]
-//     }
-//   ];
-// };
 
 const categoryList = () => {
   return [

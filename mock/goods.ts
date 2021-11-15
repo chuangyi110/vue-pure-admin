@@ -6,7 +6,7 @@ export default [
     response: () => {
       return {
         code: 0,
-        info: {}
+        data: {}
       };
     }
   },
@@ -16,7 +16,7 @@ export default [
     response: () => {
       return {
         code: 0,
-        info: {}
+        data: {}
       };
     }
   }
