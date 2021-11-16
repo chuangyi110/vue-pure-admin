@@ -79,6 +79,7 @@ const components = [
   ElSpace,
   ElDivider,
   ElCard,
+  ElCascader,
   ElDropdown,
   ElDialog,
   ElMenu,
@@ -103,9 +104,10 @@ const components = [
   ElDescriptions,
   ElDescriptionsItem,
   ElBacktop,
-  ElSwitch,
-  ElCascader,
-  // icon
+  ElSwitch
+];
+// icon
+export const iconComponents = [
   Check,
   Menu,
   HomeFilled,
@@ -128,6 +130,7 @@ const components = [
 const plugins = [ElLoading];
 
 export function useElementPlus(app: App) {
+  components.push(...iconComponents);
   components.forEach((component: Component) => {
     app.component(component.name, component);
   });

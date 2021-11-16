@@ -9,6 +9,7 @@ const systemRouter = {
   meta: {
     icon: "Setting",
     title: "message.hssysManagement",
+    i18n: true,
     showLink: true,
     rank: 6
   },
@@ -18,6 +19,7 @@ const systemRouter = {
       name: "user",
       meta: {
         title: "message.hsBaseinfo",
+        i18n: true,
         showLink: true
       }
     },
@@ -26,6 +28,7 @@ const systemRouter = {
       name: "dict",
       meta: {
         title: "message.hsDict",
+        i18n: true,
         showLink: true
       }
     }
@@ -39,6 +42,7 @@ const permissionRouter = {
   meta: {
     title: "message.permission",
     icon: "Lollipop",
+    i18n: true,
     showLink: true,
     rank: 3
   },
@@ -48,6 +52,7 @@ const permissionRouter = {
       name: "permissionPage",
       meta: {
         title: "message.permissionPage",
+        i18n: true,
         showLink: true
       }
     },
@@ -56,6 +61,7 @@ const permissionRouter = {
       name: "permissionButton",
       meta: {
         title: "message.permissionButton",
+        i18n: true,
         showLink: true,
         authority: []
       }
@@ -70,6 +76,7 @@ const goodsRoutes = {
   meta: {
     title: "message.basic.goods.library",
     icon: "Goods",
+    i18n: true,
     showLink: true
   },
   children: [
@@ -79,6 +86,7 @@ const goodsRoutes = {
       meta: {
         title: "message.basic.goods.dial",
         icon: "Goods",
+        i18n: true,
         showLink: true,
         keepAlive: true
       }
@@ -89,6 +97,8 @@ const goodsRoutes = {
       meta: {
         title: "message.basic.goods.goodsLibList",
         icon: "List",
+        i18n: true,
+
         showLink: true,
         keepAlive: true
       }
@@ -98,6 +108,8 @@ const goodsRoutes = {
       name: "goodsDetails",
       meta: {
         title: "message.basic.goods.goodsDetails",
+        i18n: true,
+
         showLink: false,
         keepAlive: true,
         authority: []
@@ -108,6 +120,7 @@ const goodsRoutes = {
       name: "/basic/goods/log",
       meta: {
         title: "message.basic.goods.goodsLog",
+        i18n: true,
         showLink: true,
         keepAlive: true,
         icon: "List",
@@ -119,6 +132,7 @@ const goodsRoutes = {
       name: "category",
       meta: {
         title: "message.basic.goods.goodsCategory",
+        i18n: true,
         showLink: true,
         keepAlive: true,
         icon: "List",
@@ -130,6 +144,7 @@ const goodsRoutes = {
       name: "brand",
       meta: {
         title: "message.basic.goods.goodsBrand",
+        i18n: true,
         showLink: true,
         keepAlive: true,
         icon: "List",
@@ -144,6 +159,7 @@ const expressRoutes = {
   redirect: "/express/list",
   meta: {
     title: "message.basic.express.expressCompanyList",
+    i18n: true,
     showLink: true
   },
   children: [
@@ -152,6 +168,7 @@ const expressRoutes = {
       name: "expressList",
       meta: {
         title: "message.basic.express.expressCompanyList",
+        i18n: true,
         showLink: true
       }
     },
@@ -160,6 +177,7 @@ const expressRoutes = {
       name: "expressRoute",
       meta: {
         title: "message.basic.express.expressRouter",
+        i18n: true,
         showLink: true
       }
     }
@@ -172,6 +190,7 @@ const basicsRoutes = {
   meta: {
     title: "message.basic.dial",
     icon: "Coin",
+    i18n: true,
     showLink: true,
     rank: 1
   },
@@ -181,6 +200,7 @@ const basicsRoutes = {
       name: "basicDial",
       meta: {
         title: "message.basic.dial",
+        i18n: true,
         icon: "Coin",
         showLink: true
       }
