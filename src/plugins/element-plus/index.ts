@@ -105,7 +105,7 @@ const components = [
   ElDescriptionsItem,
   ElBacktop,
   ElSwitch
-];
+] as Array<any>;
 // icon
 export const iconComponents = [
   Check,

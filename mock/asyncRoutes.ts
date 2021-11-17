@@ -71,7 +71,7 @@ const permissionRouter = {
 const goodsRoutes = {
   path: "/basic/goods",
   name: "goods",
-  redirect: "/goods/dial",
+  redirect: "/basic/goods/dial",
   node: "2",
   meta: {
     title: "message.basic.goods.library",

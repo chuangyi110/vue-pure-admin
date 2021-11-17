@@ -14,6 +14,8 @@ import {
   printConfig
 } from "/@/plugins/vxe-table/basicConf";
 import { useCommonStoreHook } from "/@/store/modules/common";
+import { getAsyncGoodsList } from "/@/api/goods";
+
 const title = ref("goods_list");
 const defaultForm = reactive({
   categories: ["1", "11"],
@@ -25,6 +27,7 @@ const categories = computed((): any[] => useCommonStoreHook().getCategoryArr);
 const brands = computed((): any[] => useCommonStoreHook().getBrandArr);
 const printParams = reactive(["name", "email"]);
 const tableQuery = (params: VxeGridPropTypes.ProxyAjaxQueryParams) => {
+  console.log(params);
   let { page, sorts, filters, form } = params;
   const queryParams: any = Object.assign({}, form);
   // 处理排序条件
@@ -37,6 +40,8 @@ const tableQuery = (params: VxeGridPropTypes.ProxyAjaxQueryParams) => {
   filters.forEach(({ property, values }) => {
     queryParams[property] = values.join(",");
   });
+  getAsyncGoodsList(queryParams);
+
   return XEAjax.get(
     `https://api.xuliangzhan.com:10443/demo/api/pub/page/list/${page.pageSize}/${page.currentPage}`,
     queryParams
