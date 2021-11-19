@@ -10,6 +10,7 @@ import {
   ElButton,
   ElCol,
   ElCheckbox,
+  ElCascader,
   ElRow,
   ElSpace,
   ElDivider,
@@ -26,7 +27,6 @@ import {
   ElOption,
   ElForm,
   ElFormItem,
-  ElLoading,
   ElPopover,
   ElPopper,
   ElTooltip,
@@ -40,7 +40,14 @@ import {
   ElDescriptionsItem,
   ElBacktop,
   ElSwitch,
-  ElCascader
+  ElBadge,
+  ElTabs,
+  ElTabPane,
+  ElAvatar,
+  ElEmpty,
+  // 指令
+  ElLoading,
+  ElInfiniteScroll
 } from "element-plus";
 
 // https://element-plus.org/zh-CN/component/icon.html
@@ -61,7 +68,8 @@ import {
   CloseBold,
   Coin,
   Goods,
-  List
+  List,
+  Bell
 } from "@element-plus/icons";
 
 const components = [
@@ -104,7 +112,12 @@ const components = [
   ElDescriptions,
   ElDescriptionsItem,
   ElBacktop,
-  ElSwitch
+  ElSwitch,
+  ElBadge,
+  ElTabs,
+  ElTabPane,
+  ElAvatar,
+  ElEmpty
 ] as Array<any>;
 // icon
 export const iconComponents = [
@@ -124,10 +137,11 @@ export const iconComponents = [
   CloseBold,
   Coin,
   Goods,
-  List
+  List,
+  Bell
 ];
 
-const plugins = [ElLoading];
+const plugins = [ElLoading, ElInfiniteScroll];
 
 export function useElementPlus(app: App) {
   components.push(...iconComponents);
