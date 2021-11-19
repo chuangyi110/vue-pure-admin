@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, h, onMounted, reactive, ref } from "vue";
 import {
   VXETable,
   VxeGridInstance,
@@ -14,13 +14,16 @@ import {
   printConfig
 } from "/@/plugins/vxe-table/basicConf";
 import { useCommonStoreHook } from "/@/store/modules/common";
-import { getAsyncGoodsList } from "/@/api/goods";
-
+import { selGoodsList } from "/@/api/goods";
+import { ElNotification } from "element-plus";
+// import statusColumn from "./statusColumn.vue";
 const title = ref("goods_list");
+//缓存
 const defaultForm = reactive({
   categories: ["1", "11"],
   brandIds: ["2"],
-  goodsName: "123123",
+  goodsName: "查询",
+  onsale: "",
   defaultSku: 1
 });
 const categories = computed((): any[] => useCommonStoreHook().getCategoryArr);
@@ -40,12 +43,12 @@ const tableQuery = (params: VxeGridPropTypes.ProxyAjaxQueryParams) => {
   filters.forEach(({ property, values }) => {
     queryParams[property] = values.join(",");
   });
-  getAsyncGoodsList(queryParams);
+  return selGoodsList(queryParams, page);
 
-  return XEAjax.get(
-    `https://api.xuliangzhan.com:10443/demo/api/pub/page/list/${page.pageSize}/${page.currentPage}`,
-    queryParams
-  );
+  // return XEAjax.get(
+  //   `https://api.xuliangzhan.com:10443/demo/api/pub/page/list/${page.pageSize}/${page.currentPage}`,
+  //   queryParams
+  // );
 };
 const tableDelete = (params: VxeGridPropTypes.ProxyAjaxDeleteParams) => {
   let { body } = params;
@@ -75,6 +78,9 @@ const goodsConf = reactive(
         delete: params => tableDelete(params),
         save: params => tableSave(params)
       }
+    },
+    checkboxConfig: {
+      labelField: "commonId"
     }
   })
 );
@@ -128,6 +134,28 @@ const gridOptions = reactive<VxeGridProps>({
           options: brands,
           optionProps: { value: "value", label: "label" },
           defaultValue: defaultForm.brandIds
+        }
+      },
+
+      {
+        field: "Onsale",
+        title: "销售状态",
+        span: inputSpan(),
+        itemRender: {
+          name: "ElSelect",
+          props: {
+            "default-first-option": true,
+            placeholder: "请选择品牌",
+            size: "small"
+          },
+          //@ts-ignore
+          options: [
+            { value: "", label: "全部" },
+            { value: "0", label: "下架" },
+            { value: "1", label: "上架" }
+          ],
+          optionProps: { value: "value", label: "label" },
+          defaultValue: defaultForm.onsale
         }
       },
       {
@@ -194,101 +222,62 @@ const gridOptions = reactive<VxeGridProps>({
   },
 
   columns: [
-    { type: "expand", fixed: "left", width: 40 },
+    { type: "expand", width: 40, slots: { content: "content" } },
     { type: "checkbox", title: "ID", width: 120 },
     {
-      field: "name",
-      title: "Name",
+      field: "commonImgs",
+      title: "图片",
+      width: 100,
+      slots: { default: "commonImgs" }
+    },
+    {
+      field: "commonNameZh",
+      title: "商品名称",
       // sortable: true,
-      width: 120,
-      titleHelp: { message: "名称必须填写！" },
-      editRender: { name: "input", attrs: { placeholder: "请输入名称" } }
+      width: 200
+      // titleHelp: { message: "商品名称必须填写！" }
     },
     {
-      field: "role",
-      title: "Role",
-      sortable: true,
-      width: 120,
-      filters: [
-        { label: "前端开发", value: "前端" },
-        { label: "后端开发", value: "后端" },
-        { label: "测试", value: "测试" },
-        { label: "程序员鼓励师", value: "程序员鼓励师" }
-      ],
-      filterMultiple: false,
-      editRender: { name: "input", attrs: { placeholder: "请输入角色" } }
+      field: "defaultGoods.goodsSn",
+      title: "SN",
+      width: 150
     },
+    { field: "spec", title: "规格", width: 200, slots: { default: "spec" } },
     {
-      field: "email",
-      title: "Email",
-      width: 160,
-      editRender: { name: "$input", props: { placeholder: "请输入邮件" } }
-    },
-    {
-      field: "nickname",
-      title: "Nickname",
-      editRender: { name: "input", attrs: { placeholder: "请输入昵称" } }
+      field: "defaultGoods.price",
+      title: "价格",
+      width: 150,
+      slots: { default: "prices" }
     },
     {
       title: "状态",
-      width: 200,
+      width: 400,
       slots: { default: "goodsStatus" }
     },
-    {
-      field: "sex",
-      title: "Sex",
-      filters: [
-        { label: "男", value: "1" },
-        { label: "女", value: "0" }
-      ],
-      editRender: {
-        name: "$select",
-        options: [],
-        props: { placeholder: "请选择性别" }
-      }
-    },
-    {
-      field: "age",
-      title: "Age",
-      visible: false,
-      sortable: true,
-      editRender: {
-        name: "$input",
-        props: { type: "number", min: 1, max: 120 }
-      }
-    },
-    {
-      field: "amount",
-      title: "Amount",
-      formatter({ cellValue }) {
-        return cellValue
-          ? `￥${XEUtils.commafy(XEUtils.toNumber(cellValue), { digits: 2 })}`
-          : "";
-      },
-      editRender: {
-        name: "$input",
-        props: { type: "float", digits: 2, placeholder: "请输入数值" }
-      }
-    },
     // {
-    //   field: "updateDate",
-    //   title: "Update Date",
-    //   width: 160,
-    //   visible: false,
-    //   sortable: true,
-    //   formatter({ cellValue }) {
-    //     return XEUtils.toDateString(cellValue, "yyyy-MM-dd HH:ss:mm");
-    //   }
+    //   title: "状态2",
+    //   width: 400,
+    //   slots: { default: "goodsStatus2" }
     // },
     {
-      field: "createDate",
-      title: "Create Date",
-      width: 160,
-      visible: false,
-      sortable: true,
-      formatter({ cellValue }) {
-        return XEUtils.toDateString(cellValue, "yyyy-MM-dd");
-      }
+      field: "defaultGoods.expirationDate",
+      title: "保质期",
+      width: 100
+    },
+    {
+      field: "defaultGoods.packageType",
+      title: "物流标签",
+      width: 100
+    },
+    {
+      field: "defaultGoods.goodsStandard",
+      title: "标准件",
+      width: 100
+    },
+    {
+      field: "defaultGoods.postTypes",
+      title: "发货方式",
+      width: 100
     },
     {
       title: "操作",
@@ -383,16 +372,16 @@ const gridOptions = reactive<VxeGridProps>({
           VXETable.modal.message({ content: "导出失败！", status: "error" });
         });
     }
-  },
-
-  editRules: {
-    name: [
-      { required: true, message: "app.body.valid.rName" },
-      { min: 3, max: 50, message: "名称长度在 3 到 50 个字符" }
-    ],
-    email: [{ required: true, message: "邮件必须填写" }],
-    role: [{ required: true, message: "角色必须填写" }]
   }
+
+  // editRules: {
+  //   name: [
+  //     { required: true, message: "app.body.valid.rName" },
+  //     { min: 3, max: 50, message: "名称长度在 3 到 50 个字符" }
+  //   ],
+  //   email: [{ required: true, message: "邮件必须填写" }],
+  //   role: [{ required: true, message: "角色必须填写" }]
+  // }
 
   // treeConfig: {
   //   transform: true,
@@ -400,12 +389,47 @@ const gridOptions = reactive<VxeGridProps>({
   //   parentField: "parentId"
   // }
 });
+const currencySymbol = currency => (currency === "AUD" ? "$" : "￥");
+const statusColumns = reactive([
+  {
+    model: "onSale",
+    label: "在售",
+    open: { label: "上架", value: "1" },
+    close: { label: "下架", value: "0" }
+  },
+  {
+    model: "advance",
+    label: "预售",
+    open: { label: "开启", value: "1" },
+    close: { label: "关闭", value: "0" }
+  },
+  {
+    model: "gst",
+    label: "GST",
+    open: { label: "含税", value: "1" },
+    close: { label: "不含", value: "0" }
+  }
+]);
+const statusHandler = ({ value }, { goodsId }, item) => {
+  let lab = item.open.value === value ? item.open.label : item.close.label;
+  ElNotification({
+    title: "Success",
+    message: h(
+      "i",
+      { style: "color: teal" },
+      goodsId + " {" + item.label + "} 状态成功更新为" + lab
+    ),
+    type: "success",
+    duration: 5000
+  });
+};
+// const column = reactive(["onSale", "advance"]);
 onMounted(() => {
   const sexList = [
     { label: "女", value: "0" },
     { label: "男", value: "1" }
   ];
-  const { formConfig, columns } = gridOptions;
+  const { columns } = gridOptions;
   //列
   if (columns) {
     const sexColumn = columns[5];
@@ -414,23 +438,65 @@ onMounted(() => {
     }
   }
   //查询字段
-  if (formConfig && formConfig.items) {
-    const sexItem = formConfig.items[3];
-    if (sexItem && sexItem.itemRender) {
-      sexItem.itemRender.options = sexList;
-    }
-  }
+  // if (formConfig && formConfig.items) {
+  //   const sexItem = formConfig.items[3];
+  //   if (sexItem && sexItem.itemRender) {
+  //     sexItem.itemRender.options = sexList;
+  //   }
+  // }
 });
 </script>
 <template>
   <div class="app-container">
     <h1>{{ title }}</h1>
     <vxe-grid ref="xGrid" v-bind="gridOptions">
-      <template #goodsStatus="{ row }">
-        <div class="label-ellipsis">{{ row.name }}123</div>
-        <div class="label-ellipsis">456</div>
-        <div class="label-ellipsis">789</div>
+      <template #commonImgs="{ row: { commonImgs } }">
+        {{ commonImgs }}
       </template>
+
+      <template
+        #spec="{
+          row: { mainSpec, mainSpecProp, subsidiarySpec, subsidiarySpecProp }
+        }"
+      >
+        {{ mainSpec }}
+        {{ mainSpecProp }}
+        {{ subsidiarySpec }}
+        {{ subsidiarySpecProp }}
+      </template>
+
+      <template
+        #prices="{
+          row: {
+            defaultGoods: { currency, price }
+          }
+        }"
+      >
+        {{ currencySymbol(currency) + price }}
+      </template>
+
+      <template #goodsStatus="{ row: { defaultGoods } }">
+        <el-descriptions :column="2" :size="'mini'" border>
+          <el-descriptions-item
+            :align="'center'"
+            v-for="item in statusColumns"
+            :key="item.l"
+          >
+            <template #label> {{ item.label }}</template>
+            <vxe-switch
+              v-model="defaultGoods[item.model]"
+              :open-label="item.open.label"
+              :open-value="item.open.value"
+              :close-label="item.close.label"
+              :close-value="item.close.value"
+              @change="statusHandler($event, defaultGoods, item)"
+            />
+          </el-descriptions-item>
+        </el-descriptions>
+      </template>
+      <!-- <template #goodsStatus2="{ row }">
+        <status-column v-model:modelValue="row.defaultGoods" :status="column" />
+      </template> -->
       <template #operate="{ row }">
         <template v-if="$refs.xGrid.isActiveByRow(row)">
           <vxe-button
@@ -457,6 +523,23 @@ onMounted(() => {
         />
         <vxe-button icon="fa fa-eye" title="查看" circle></vxe-button>
         <vxe-button icon="fa fa-gear" title="设置" circle></vxe-button>
+      </template>
+
+      <template #content="{ row }">
+        <ul class="expand-wrapper" style="padding: 20px">
+          <li>
+            <span>ID：</span>
+            <span>{{ row.id }}</span>
+          </li>
+          <li>
+            <span>Name：</span>
+            <span>{{ row.name }}</span>
+          </li>
+          <li>
+            <span>Date</span>
+            <span>{{ row.date }}</span>
+          </li>
+        </ul>
       </template>
     </vxe-grid>
   </div>

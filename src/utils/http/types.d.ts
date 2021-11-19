@@ -48,17 +48,14 @@ export default class EnclosureHttp {
     config?: EnclosureHttpRequestConfig
   ): Promise<T>;
 }
-
+export type PageBody<T> = {
+  records: Array<T>;
+  totalCount: Number;
+  pageNo: Number;
+  pageSize: Number;
+};
 export type ResBody<T = any> = {
   code: Number;
   message: string;
-  data:
-    | T
-    | T[]
-    | {
-        records: Array<T>;
-        totalCount: Number;
-        pageNo: Number;
-        pageSize: Number;
-      };
+  data: T | T[] | PageBody<T>;
 };

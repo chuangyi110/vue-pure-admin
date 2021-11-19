@@ -9,7 +9,8 @@ export type OptType = {
   //子类
   children: optionType[];
 };
-export type Spu = {
+
+export type SPU = {
   commonId: string;
   commonNameZh: string;
   commonNameEn: string;

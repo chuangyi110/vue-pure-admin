@@ -65,8 +65,8 @@ export const basicConf = <VxeTableProps>{
     form: true, // 启用表单代理，当点击表单提交按钮时会自动触发 reload 行为
     // 对应响应结果 { result: [], page: { total: 100 } }
     props: {
-      result: "result", // 配置响应结果列表字段
-      total: "page.total" // 配置响应结果总页数字段
+      result: "data.records", // 配置响应结果列表字段
+      total: "data.totalCount" // 配置响应结果总页数字段
     }
   },
   scrollY: {

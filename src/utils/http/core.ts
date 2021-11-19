@@ -193,13 +193,13 @@ class EnclosureHttp {
     );
   }
 
-  public request<T, T2>(
+  public request<T>(
     method: RequestMethods,
     url: string,
     // param?: AxiosRequestConfig,
     param?: T,
     axiosConfig?: EnclosureHttpRequestConfig
-  ): Promise<ResBody<T2>> {
+  ): Promise<ResBody> {
     const config = transformConfigByMethod(param, {
       method,
       url,
@@ -218,20 +218,20 @@ class EnclosureHttp {
     });
   }
 
-  public post<T, T2>(
+  public post<T>(
     url: string,
     params?: T,
     config?: EnclosureHttpRequestConfig
-  ): Promise<ResBody<T2>> {
-    return this.request<T, T2>("post", url, params, config);
+  ): Promise<ResBody> {
+    return this.request<T>("post", url, params, config);
   }
 
-  public get<T, T2>(
+  public get<T>(
     url: string,
     params?: T,
     config?: EnclosureHttpRequestConfig
-  ): Promise<ResBody<T2>> {
-    return this.request<T, T2>("get", url, params, config);
+  ): Promise<ResBody> {
+    return this.request<T>("get", url, params, config);
   }
 }
 

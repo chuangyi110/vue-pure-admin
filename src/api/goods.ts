@@ -1,6 +1,10 @@
 import { http } from "../utils/http";
-import { Spu } from "./type";
+import { ResBody } from "../utils/http/types";
+import { SKU } from "./goodsType";
 
-export const getAsyncGoodsList = (data?: object) => {
-  return http.get<object, Spu>("/api/v1/erp/getGoodsList", data);
+export const selGoodsList = (
+  data?: object,
+  config?: object
+): Promise<ResBody<SKU>> => {
+  return http.post<object>("/api/v1/erp/getGoodsList", data, config);
 };
