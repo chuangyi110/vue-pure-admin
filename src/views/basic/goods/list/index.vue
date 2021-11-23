@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import { computed, h, onMounted, reactive, ref } from "vue";
+<script lang="ts">
+import { computed, h, onMounted, reactive, ref, defineComponent } from "vue";
 import {
   VXETable,
   VxeGridInstance,
@@ -16,13 +16,22 @@ import {
 import { useCommonStoreHook } from "/@/store/modules/common";
 import { selGoodsList } from "/@/api/goods";
 import { ElNotification } from "element-plus";
+import { useRouter } from "vue-router";
+export default defineComponent({
+  name: "goodsList"
+});
+</script>
+
+<script setup lang="ts">
+const router = useRouter();
+
 // import statusColumn from "./statusColumn.vue";
 const title = ref("goods_list");
 //缓存
 const defaultForm = reactive({
-  categories: ["1", "11"],
-  brandIds: ["2"],
-  goodsName: "查询",
+  categories: [],
+  brandIds: [],
+  goodsName: "",
   onsale: "",
   defaultSku: 1
 });
@@ -44,11 +53,6 @@ const tableQuery = (params: VxeGridPropTypes.ProxyAjaxQueryParams) => {
     queryParams[property] = values.join(",");
   });
   return selGoodsList(queryParams, page);
-
-  // return XEAjax.get(
-  //   `https://api.xuliangzhan.com:10443/demo/api/pub/page/list/${page.pageSize}/${page.currentPage}`,
-  //   queryParams
-  // );
 };
 const tableDelete = (params: VxeGridPropTypes.ProxyAjaxDeleteParams) => {
   let { body } = params;
@@ -64,16 +68,19 @@ const tableSave = (params: VxeGridPropTypes.ProxyAjaxSaveParams) => {
     body
   );
 };
-
 const goodsConf = reactive(
   XEUtils.merge(basicConf, {
-    toolbarConfig: { refresh: true, import: false },
+    toolbarConfig: {
+      slots: { buttons: "toolbar_buttons" },
+      refresh: true,
+      import: false
+    },
     proxyConfig: {
       ajax: {
         // 接收 Promise
-        queryAll: params => () => {
-          console.log(params);
-        },
+        // queryAll: params => () => {
+        //   console.log(params);
+        // },
         query: params => tableQuery(params),
         delete: params => tableDelete(params),
         save: params => tableSave(params)
@@ -148,7 +155,6 @@ const gridOptions = reactive<VxeGridProps>({
             placeholder: "请选择品牌",
             size: "small"
           },
-          //@ts-ignore
           options: [
             { value: "", label: "全部" },
             { value: "0", label: "下架" },
@@ -227,7 +233,7 @@ const gridOptions = reactive<VxeGridProps>({
     {
       field: "commonImgs",
       title: "图片",
-      width: 100,
+      width: 120,
       slots: { default: "commonImgs" }
     },
     {
@@ -281,7 +287,7 @@ const gridOptions = reactive<VxeGridProps>({
     },
     {
       title: "操作",
-      width: 200,
+      width: 100,
       slots: { default: "operate" },
       fixed: "right"
     }
@@ -408,6 +414,12 @@ const statusColumns = reactive([
     label: "GST",
     open: { label: "含税", value: "1" },
     close: { label: "不含", value: "0" }
+  },
+  {
+    model: "common",
+    label: "代售",
+    open: { label: "可以", value: "1" },
+    close: { label: "禁止", value: "0" }
   }
 ]);
 const statusHandler = ({ value }, { goodsId }, item) => {
@@ -445,25 +457,53 @@ onMounted(() => {
   //   }
   // }
 });
+
+const addGoods = () => {
+  console.log("addGoodsButtonAcitive");
+  console.log(router);
+
+  console.log(xGrid.value.getCheckboxRecords()[0].commonId);
+  // router.push("/basic/goods/edit");
+};
 </script>
 <template>
   <div class="app-container">
     <h1>{{ title }}</h1>
     <vxe-grid ref="xGrid" v-bind="gridOptions">
       <template #commonImgs="{ row: { commonImgs } }">
-        {{ commonImgs }}
+        <el-image
+          style="width: 100px; height: 100px"
+          :src="commonImgs[0]"
+          :fit="'contain'"
+        />
       </template>
-
+      <!--多规格模板 start-->
       <template
         #spec="{
           row: { mainSpec, mainSpecProp, subsidiarySpec, subsidiarySpecProp }
         }"
       >
-        {{ mainSpec }}
-        {{ mainSpecProp }}
-        {{ subsidiarySpec }}
-        {{ subsidiarySpecProp }}
+        {{ mainSpec }}:
+        <div class="spec_child">
+          <el-tag
+            v-for="mainSpecPropChild in mainSpecProp"
+            :key="mainSpecPropChild"
+          >
+            {{ mainSpecPropChild }}
+          </el-tag>
+        </div>
+        {{ subsidiarySpec }}:
+        <div class="spec_child">
+          <el-tag
+            v-for="subsidiarySpecPropChild in subsidiarySpecProp"
+            :key="subsidiarySpecPropChild"
+            type="success"
+          >
+            {{ subsidiarySpecPropChild }}
+          </el-tag>
+        </div>
       </template>
+      <!--多规格模板 end-->
 
       <template
         #prices="{
@@ -498,31 +538,35 @@ onMounted(() => {
         <status-column v-model:modelValue="row.defaultGoods" :status="column" />
       </template> -->
       <template #operate="{ row }">
-        <template v-if="$refs.xGrid.isActiveByRow(row)">
+        <div>
+          <template v-if="$refs.xGrid.isActiveByRow(row)">
+            <vxe-button
+              icon="fa fa-save"
+              status="primary"
+              title="保存"
+              circle
+              @click="saveRowEvent(row)"
+            ></vxe-button>
+          </template>
+          <template v-else>
+            <vxe-button
+              icon="fa fa-edit"
+              title="编辑"
+              circle
+              @click="editRowEvent(row)"
+            ></vxe-button>
+          </template>
           <vxe-button
-            icon="fa fa-save"
-            status="primary"
-            title="保存"
+            icon="fa fa-trash"
+            title="删除"
             circle
-            @click="saveRowEvent(row)"
-          ></vxe-button>
-        </template>
-        <template v-else>
-          <vxe-button
-            icon="fa fa-edit"
-            title="编辑"
-            circle
-            @click="editRowEvent(row)"
-          ></vxe-button>
-        </template>
-        <vxe-button
-          icon="fa fa-trash"
-          title="删除"
-          circle
-          @click="removeRowEvent(row)"
-        />
-        <vxe-button icon="fa fa-eye" title="查看" circle></vxe-button>
-        <vxe-button icon="fa fa-gear" title="设置" circle></vxe-button>
+            @click="removeRowEvent(row)"
+          />
+        </div>
+        <div>
+          <vxe-button icon="fa fa-eye" title="查看" circle></vxe-button>
+          <vxe-button icon="fa fa-gear" title="设置" circle></vxe-button>
+        </div>
       </template>
 
       <template #content="{ row }">
@@ -541,6 +585,20 @@ onMounted(() => {
           </li>
         </ul>
       </template>
+
+      <template #toolbar_buttons>
+        <vxe-button v-auth="'v-admin'" @click="addGoods()">新增</vxe-button>
+        <vxe-button v-auth="'v-admin'"> 选中上架 </vxe-button>
+      </template>
     </vxe-grid>
   </div>
 </template>
+<style lang="scss" scoped>
+.spec_child {
+  margin: 5px;
+
+  .el-tag {
+    margin: 5px;
+  }
+}
+</style>

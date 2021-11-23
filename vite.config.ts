@@ -132,6 +132,12 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
             resolveComponent: name => `vxe-table/es/${name}`,
             resolveStyle: name => `vxe-table/es/${name}/style.css`
           }
+          // {
+          //   libraryName: "element-plus",
+          //   esModule: true,
+          //   resolveStyle: name => `element-plus/lib/theme-chalk/${name}.css`,
+          //   resolveComponent: name => `element-plus/lib/${name}`
+          // }
         ]
       }),
       ElementPlus({}),

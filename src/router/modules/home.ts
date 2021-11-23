@@ -9,17 +9,19 @@ const homeRouter = {
     icon: "HomeFilled",
     showLink: true,
     i18n: true,
-    rank: 0
+    rank: 0,
+    keepAlive: true
   },
   children: [
     {
       path: "/welcome",
-      name: "/welcome",
+      name: "welcome",
       component: () => import("/@/views/welcome.vue"),
       meta: {
         title: "message.hshome",
         i18n: true,
-        showLink: true
+        showLink: true,
+        keepAlive: true
       }
     }
   ]

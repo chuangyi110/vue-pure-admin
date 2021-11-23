@@ -90,6 +90,7 @@ export const handleAliveRoute = (
   matched: RouteRecordNormalized[],
   mode?: string
 ) => {
+  console.log(matched, mode);
   switch (mode) {
     case "add":
       matched.forEach(v => {

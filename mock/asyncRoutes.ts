@@ -77,7 +77,8 @@ const goodsRoutes = {
     title: "message.basic.goods.library",
     icon: "Goods",
     i18n: true,
-    showLink: true
+    showLink: true,
+    keepAlive: true
   },
   children: [
     {
@@ -98,8 +99,17 @@ const goodsRoutes = {
         title: "message.basic.goods.goodsLibList",
         icon: "List",
         i18n: true,
-
         showLink: true,
+        keepAlive: true
+      }
+    },
+    {
+      path: "/basic/goods/edit",
+      name: "goodsEdit",
+      meta: {
+        title: "message.basic.goods.goodsEdit",
+        i18n: true,
+        showLink: false,
         keepAlive: true
       }
     },

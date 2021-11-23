@@ -23,22 +23,22 @@ export const basicConf = <VxeTableProps>{
     pageSizes: [5, 10, 15, 20, 50, 100, 200, 500, 1000]
   },
   toolbarConfig: {
-    buttons: [
-      { code: "insert_actived", name: "新增", icon: "fa fa-plus" },
-      {
-        code: "delete",
-        name: "批量删除",
-        icon: "fa fa-trash-o",
-        status: "warning"
-      }
-      // { code: "mark_cancel", name: "删除/取消", icon: "fa fa-trash-o" },
-      // {
-      //   code: "save",
-      //   name: "保存",
-      //   icon: "fa fa-save",
-      //   status: "success"
-      // }
-    ],
+    // buttons: [
+    // { code: "insert_actived", name: "新增", icon: "fa fa-plus" },
+    // {
+    //   code: "delete",
+    //   name: "批量删除",
+    //   icon: "fa fa-trash-o",
+    //   status: "warning"
+    // }
+    // { code: "mark_cancel", name: "删除/取消", icon: "fa fa-trash-o" },
+    // {
+    //   code: "save",
+    //   name: "保存",
+    //   icon: "fa fa-save",
+    //   status: "success"
+    // }
+    // ],
     refresh: true,
     import: true,
     export: true,

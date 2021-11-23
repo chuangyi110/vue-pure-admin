@@ -11,11 +11,14 @@ const goodsListPage = (): PageBody<object> => {
         commonId: "1",
         commonNameZh: "测试1测试1测试1测试1测试1测试1测试1测试1测试1测试1测试1",
         commonNameEn: "test1",
-        commonImgs: ["img1", "img2"],
-        mainSpec: "",
-        mainSpecProp: [],
-        subsidiarySpec: "",
-        subsidiarySpecProp: [],
+        commonImgs: [
+          "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+          "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+        ],
+        mainSpec: "颜色",
+        mainSpecProp: ["黄", "白", "绿"],
+        subsidiarySpec: "尺码",
+        subsidiarySpecProp: ["5", "6", "7"],
         defaultGoods: {
           goodsId: "123",
           goodsSn: "914565822",
@@ -26,6 +29,7 @@ const goodsListPage = (): PageBody<object> => {
           onSale: "0",
           advance: "0",
           gst: "1",
+          common: "1",
           expirationDate: "36月",
           packageType: "奶粉",
           goodsStandard: "1",

@@ -6,7 +6,7 @@ import {
   ReLine,
   ReBar
 } from "/@/components/ReCharts/index";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 const date: Date = new Date();
 let loading = ref<boolean>(true);
@@ -28,13 +28,17 @@ let greetings = computed(() => {
 const openDepot = (): void => {
   window.open("https://github.com/xiaoxian521/vue-pure-admin");
 };
-
+onMounted(() => {
+  console.log("welcome");
+});
+// onActivated(() => {
+//   console.log("welcome back");
+// });
 const name = ref("");
 </script>
 
 <template>
   <div class="welcome">
-    <el-input v-model="name" placeholder="请输入" />
     <el-card class="top-content">
       <div class="left-mark">
         <img
@@ -45,6 +49,7 @@ const name = ref("");
         <span>{{ greetings }}</span>
       </div>
     </el-card>
+    <el-input v-model="name" placeholder="请输入" />
 
     <el-row :gutter="24" style="margin: 20px">
       <el-col

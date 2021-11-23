@@ -2,16 +2,13 @@
 import XEUtils from "xe-utils";
 import { defineComponent, reactive, ref } from "vue";
 import { VxeGridInstance, VxeGridProps, VxeGridPropTypes } from "vxe-table";
-import { basicConf, inputSpan } from "/@/plugins/vxe-table/basicConf";
+import { basicConf } from "/@/plugins/vxe-table/basicConf";
 export default defineComponent({
-  name: "CategoryList"
+  name: ""
 });
 </script>
-
 <script setup lang="ts">
-const title = ref("category");
-
-const categoryConf = reactive<VxeGridProps>(
+const conf = reactive<VxeGridProps>(
   XEUtils.merge(basicConf, {
     toolbarConfig: {
       slots: { buttons: "toolbar_buttons" },
@@ -20,7 +17,6 @@ const categoryConf = reactive<VxeGridProps>(
     },
     proxyConfig: {
       ajax: {
-        // 接收 Promise
         queryAll: (params): Promise<any> => {
           console.log(params);
           return {} as Promise<any>;
@@ -45,31 +41,20 @@ const tableSave = (params: VxeGridPropTypes.ProxyAjaxSaveParams) => {
 };
 const xGrid = ref({} as VxeGridInstance);
 const gridOptions = reactive<VxeGridProps>({
-  ...categoryConf,
+  ...conf,
   id: "",
   height: 600,
-  rowId: "categoryId",
+  rowId: "id",
   formConfig: {
     titleWidth: 100,
     titleAlign: "center",
     items: [
       {
-        field: "",
-        title: "",
-        span: inputSpan(),
-        itemRender: {
-          name: "$input",
-          props: {
-            placeholder: ""
-          }
-        }
-      },
-      {
         span: 24,
         align: "center",
         collapseNode: false,
         itemRender: {
-          name: "$buttons",
+          name: "buttons",
           children: [
             {
               props: {
@@ -94,7 +79,7 @@ const gridOptions = reactive<VxeGridProps>({
 </script>
 <template>
   <div class="app-container">
-    <h1>{{ title }}</h1>
+    <h1></h1>
     <vxe-grid ref="xGrid" v-bind="gridOptions">
       <template #toolbar_buttons>
         <vxe-button v-auth="'v-admin'">新增</vxe-button>
@@ -102,3 +87,4 @@ const gridOptions = reactive<VxeGridProps>({
     </vxe-grid>
   </div>
 </template>
+<style lang="scss" scoped></style>

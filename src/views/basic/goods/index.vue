@@ -1,6 +1,12 @@
-<script setup lang="ts">
-import { ref, getCurrentInstance } from "vue";
+<script lang="ts">
+import { ref, getCurrentInstance, defineComponent } from "vue";
 import { usePermissionStoreHook } from "/@/store/modules/permission";
+export default defineComponent({
+  name: "goods"
+});
+</script>
+
+<script setup lang="ts">
 const keepAlive: Boolean = ref(
   getCurrentInstance().appContext.config.globalProperties.$config?.KeepAlive
 );
