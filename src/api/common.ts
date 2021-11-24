@@ -1,8 +1,9 @@
 import { http } from "../utils/http";
+import { ResBody } from "../utils/http/types";
 import { OptType } from "./type";
 
-export const getAsyncBrandList = (data?: object) => {
-  return http.get<object, OptType>("/api/v1/erp/getBrandList", data);
+export const getAsyncBrandList = (data?: object): Promise<ResBody<OptType>> => {
+  return http.get<object>("/api/v1/erp/getBrandList", data);
 };
 export const addBrand = (data?: object) => {
   return http.post("/api/v1/erp/brand", data);

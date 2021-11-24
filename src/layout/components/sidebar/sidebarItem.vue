@@ -90,7 +90,7 @@ function resolvePath(routePath) {
       :class="{ 'submenu-title-noDropdown': !isNest }"
       style="display: flex; align-items: center"
     >
-      <el-icon v-show="props.item.meta.icon">
+      <el-icon v-show="props.item.meta.icon" :class="props.item.meta.icon">
         <component
           :is="
             findIconReg(

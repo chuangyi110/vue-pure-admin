@@ -170,6 +170,7 @@ const expressRoutes = {
   meta: {
     title: "message.basic.express.expressCompanyList",
     i18n: true,
+    icon: "ri-truck-line",
     showLink: true
   },
   children: [
@@ -179,6 +180,7 @@ const expressRoutes = {
       meta: {
         title: "message.basic.express.expressCompanyList",
         i18n: true,
+        icon: "ri-truck-line",
         showLink: true
       }
     },
@@ -188,6 +190,7 @@ const expressRoutes = {
       meta: {
         title: "message.basic.express.expressRouter",
         i18n: true,
+        // icon: "ri-truck-line",
         showLink: true
       }
     }

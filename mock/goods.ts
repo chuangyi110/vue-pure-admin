@@ -26,7 +26,7 @@ const goodsListPage = (): PageBody<object> => {
           goodsMainSpecPropImgs: "imgdf",
           currency: "AUD",
           price: 16,
-          onSale: "0",
+          onSale: "1",
           advance: "0",
           gst: "1",
           common: "1",

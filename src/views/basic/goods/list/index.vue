@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, h, onMounted, reactive, ref, defineComponent } from "vue";
+import { computed, onMounted, reactive, ref, defineComponent } from "vue";
 import {
   VXETable,
   VxeGridInstance,
@@ -15,8 +15,10 @@ import {
 } from "/@/plugins/vxe-table/basicConf";
 import { useCommonStoreHook } from "/@/store/modules/common";
 import { selGoodsList } from "/@/api/goods";
-import { ElNotification } from "element-plus";
+// import { ElNotification } from "element-plus";
 import { useRouter } from "vue-router";
+//@ts-ignore
+import statusColumn from "./statusColumn.vue";
 export default defineComponent({
   name: "goodsList"
 });
@@ -25,17 +27,18 @@ export default defineComponent({
 <script setup lang="ts">
 const router = useRouter();
 
-// import statusColumn from "./statusColumn.vue";
 const title = ref("goods_list");
 //缓存
 const defaultForm = reactive({
   categories: [],
   brandIds: [],
   goodsName: "",
-  onsale: "",
+  onSale: "",
   defaultSku: 1
 });
-const categories = computed((): any[] => useCommonStoreHook().getCategoryArr);
+const categories = computed(
+  (): any[] => useCommonStoreHook().getCategorySelect
+);
 const brands = computed((): any[] => useCommonStoreHook().getBrandArr);
 const printParams = reactive(["name", "email"]);
 const tableQuery = (params: VxeGridPropTypes.ProxyAjaxQueryParams) => {
@@ -118,7 +121,12 @@ const gridOptions = reactive<VxeGridProps>({
           props: {
             options: categories,
             filterable: true,
-            size: "small"
+            size: "small",
+            props: {
+              label: "categoryNameEn",
+              value: "categoryId",
+              children: "children"
+            }
           },
           defaultValue: defaultForm.categories
         }
@@ -161,7 +169,7 @@ const gridOptions = reactive<VxeGridProps>({
             { value: "1", label: "上架" }
           ],
           optionProps: { value: "value", label: "label" },
-          defaultValue: defaultForm.onsale
+          defaultValue: defaultForm.onSale
         }
       },
       {
@@ -255,16 +263,16 @@ const gridOptions = reactive<VxeGridProps>({
       width: 150,
       slots: { default: "prices" }
     },
+    // {
+    //   title: "状态",
+    //   width: 400,
+    //   slots: { default: "goodsStatus" }
+    // },
     {
       title: "状态",
       width: 400,
       slots: { default: "goodsStatus" }
     },
-    // {
-    //   title: "状态2",
-    //   width: 400,
-    //   slots: { default: "goodsStatus2" }
-    // },
     {
       field: "defaultGoods.expirationDate",
       title: "保质期",
@@ -396,46 +404,7 @@ const gridOptions = reactive<VxeGridProps>({
   // }
 });
 const currencySymbol = currency => (currency === "AUD" ? "$" : "￥");
-const statusColumns = reactive([
-  {
-    model: "onSale",
-    label: "在售",
-    open: { label: "上架", value: "1" },
-    close: { label: "下架", value: "0" }
-  },
-  {
-    model: "advance",
-    label: "预售",
-    open: { label: "开启", value: "1" },
-    close: { label: "关闭", value: "0" }
-  },
-  {
-    model: "gst",
-    label: "GST",
-    open: { label: "含税", value: "1" },
-    close: { label: "不含", value: "0" }
-  },
-  {
-    model: "common",
-    label: "代售",
-    open: { label: "可以", value: "1" },
-    close: { label: "禁止", value: "0" }
-  }
-]);
-const statusHandler = ({ value }, { goodsId }, item) => {
-  let lab = item.open.value === value ? item.open.label : item.close.label;
-  ElNotification({
-    title: "Success",
-    message: h(
-      "i",
-      { style: "color: teal" },
-      goodsId + " {" + item.label + "} 状态成功更新为" + lab
-    ),
-    type: "success",
-    duration: 5000
-  });
-};
-// const column = reactive(["onSale", "advance"]);
+const column = reactive(["onSale", "advance", "gst", "common"]);
 onMounted(() => {
   const sexList = [
     { label: "女", value: "0" },
@@ -461,7 +430,7 @@ onMounted(() => {
 const addGoods = () => {
   console.log("addGoodsButtonAcitive");
   console.log(router);
-
+  column.push("gst");
   console.log(xGrid.value.getCheckboxRecords()[0].commonId);
   // router.push("/basic/goods/edit");
 };
@@ -515,28 +484,9 @@ const addGoods = () => {
         {{ currencySymbol(currency) + price }}
       </template>
 
-      <template #goodsStatus="{ row: { defaultGoods } }">
-        <el-descriptions :column="2" :size="'mini'" border>
-          <el-descriptions-item
-            :align="'center'"
-            v-for="item in statusColumns"
-            :key="item.l"
-          >
-            <template #label> {{ item.label }}</template>
-            <vxe-switch
-              v-model="defaultGoods[item.model]"
-              :open-label="item.open.label"
-              :open-value="item.open.value"
-              :close-label="item.close.label"
-              :close-value="item.close.value"
-              @change="statusHandler($event, defaultGoods, item)"
-            />
-          </el-descriptions-item>
-        </el-descriptions>
+      <template #goodsStatus="{ row }">
+        <status-column v-model="row.defaultGoods" :status="column" />
       </template>
-      <!-- <template #goodsStatus2="{ row }">
-        <status-column v-model:modelValue="row.defaultGoods" :status="column" />
-      </template> -->
       <template #operate="{ row }">
         <div>
           <template v-if="$refs.xGrid.isActiveByRow(row)">

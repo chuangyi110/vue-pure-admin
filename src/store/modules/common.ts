@@ -54,11 +54,14 @@ export const useCommonStore = defineStore({
       }
       return this.brandArr.data;
     },
-    getCategoryArr() {
+    getCategorySelect() {
       if (!this.categoryArr.timestamp) {
         this.initCategoryList();
       }
-      return this.categoryArr.data;
+      return XEUtils.toArrayTree(this.categoryArr.data, {
+        key: "categoryId",
+        parentKey: "categoryPid"
+      });
     }
   },
   actions: {
@@ -67,7 +70,7 @@ export const useCommonStore = defineStore({
     },
     initBrandList() {
       this.asyncGetBrand().then(
-        (res: ResBody<OptType>) => {
+        (res: ResBody) => {
           this.brandArr = {
             timestamp: XEUtils.timestamp(new Date()),
             data: res.data

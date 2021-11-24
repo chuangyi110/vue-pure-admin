@@ -7,7 +7,7 @@
     >
       <template #label> {{ item.l }}</template>
       <vxe-switch
-        :value="modelValue[item.m]"
+        v-model="data[item.m]"
         :open-label="item.o.l"
         :open-value="item.o.v"
         :close-label="item.c.l"
@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { ElNotification } from "element-plus";
 import { computed, defineProps, reactive, h, onMounted } from "vue";
-type column = "onSale" | "advance" | "gst";
+type column = "onSale" | "advance" | "gst" | "common";
 type columnParams = {
   m: column;
   l: string;
@@ -32,11 +32,31 @@ const props = defineProps<{
   status: column[];
   modelValue: any;
 }>();
+const data = reactive(props.modelValue);
 const emit = defineEmits<{
   (e: "update:modelValue", data): void;
 }>();
+const statusHandler = ({ value }, item) => {
+  // let goods = props.modelValue;
+  let { goodsName, goodsId } = data;
+  let lab = item.o.v === value ? item.o.l : item.c.l;
+  ElNotification({
+    title: "Success",
+    message: h(
+      "i",
+      { style: "color: teal" },
+      (goodsName || "") + goodsId + " {" + item.l + "} 状态成功更新为" + lab
+    ),
+    duration: 5000,
+    type: "success"
+  });
+  // goods[item.m] = value;
+  // console.log(goods);
+
+  emit("update:modelValue", data);
+};
 onMounted(() => {});
-const defualtColumns: columnParams[] = reactive([
+const defaultColumns: columnParams[] = reactive([
   {
     m: "onSale",
     l: "在售",
@@ -49,27 +69,17 @@ const defualtColumns: columnParams[] = reactive([
     o: { l: "开启", v: "1" },
     c: { l: "关闭", v: "0" }
   },
+  {
+    m: "common",
+    l: "代售",
+    o: { l: "可以", v: "1" },
+    c: { l: "禁止", v: "0" }
+  },
   { m: "gst", l: "GST", o: { l: "含税", v: "1" }, c: { l: "不含", v: "0" } }
 ]);
 const statusColumns = computed(() => {
-  return defualtColumns.filter(column => props.status.includes(column.m));
+  return defaultColumns.filter(column => props.status.includes(column.m));
 });
-const statusHandler = ({ value }, item) => {
-  let goods = props.modelValue;
-  let { goodsName, goodsId } = goods;
-  ElNotification({
-    title: "Success",
-    message: h(
-      "i",
-      { style: "color: teal" },
-      goodsName + goodsId + " {" + item.l + "} 状态成功更新为" + value
-    ),
-    duration: 5000
-  });
-  goods[item.m] = value;
-  console.log(goods);
-  emit("update:modelValue", goods);
-};
 </script>
 
 <style></style>

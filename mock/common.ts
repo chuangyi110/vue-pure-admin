@@ -10,14 +10,33 @@ const brandList = () => {
 const categoryList = () => {
   return [
     {
-      label: "奶粉",
-      value: "1",
-      children: [
-        { label: "一段", value: "11" },
-        { label: "二段", value: "12" }
-      ]
+      categoryId: "1",
+      categoryNameZh: "奶粉",
+      categoryNameEn: "powdered Milk",
+      categoryImgUrl: "",
+      categoryPid: "0"
     },
-    { label: "补剂", value: "2" }
+    {
+      categoryId: "11",
+      categoryNameZh: "1段",
+      categoryNameEn: "powdered Milk1",
+      categoryImgUrl: "",
+      categoryPid: "1"
+    },
+    {
+      categoryId: "12",
+      categoryNameZh: "2段",
+      categoryNameEn: "powdered Milk2",
+      categoryImgUrl: "",
+      categoryPid: "1"
+    },
+    {
+      categoryId: "2",
+      categoryNameZh: "唐人",
+      categoryNameEn: "唐人",
+      categoryImgUrl: "",
+      categoryPid: "0"
+    }
   ];
 };
 export default [
