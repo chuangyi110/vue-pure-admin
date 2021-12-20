@@ -15,7 +15,7 @@ UI 设计：<https://www.bilibili.com/video/BV17g411T7rq/>
 
 ## 配套文档
 
-正在编写中，预计发布时间 2021 年 11 月 28 日
+<https://pure-admin-doc.vercel.app/>
 
 ## 精简版
 
@@ -117,13 +117,15 @@ pnpm build
 
 ## 捐赠
 
-如果你觉得这个项目对你有帮助，你可以帮作者买一杯咖啡表示支持!
+如果你觉得这个项目对你有帮助，你可以帮作者买一杯咖啡表示支持
 
-<img src="http://yiming_chang.gitee.io/manages/pay.png" width="360px" height="480px" />
+<img src="http://yiming_chang.gitee.io/manages/pay.jpg" width="150px" height="150px" />
 
-## 微信交流群
+## 付费咨询、需求定制
 
-本人微信：18237613535，拉你进群
+作者精力有限，需要提供技术服务的可扫下面的二维码加微信，添加请备注来意
+
+<img src="http://yiming_chang.gitee.io/manages/wechat.jpg" width="150px" height="150px" />
 
 ## 许可证
 

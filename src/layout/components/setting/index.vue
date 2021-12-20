@@ -10,13 +10,17 @@ import {
   getCurrentInstance
 } from "vue";
 import panel from "../panel/index.vue";
+import { getConfig } from "/@/config";
 import { useRouter } from "vue-router";
 import { emitter } from "/@/utils/mitt";
 import { templateRef } from "@vueuse/core";
+import dayIcon from "/@/assets/svg/day.svg";
 import { debounce } from "/@/utils/debounce";
+import darkIcon from "/@/assets/svg/dark.svg";
 import { themeColorsType } from "../../types";
 import { useAppStoreHook } from "/@/store/modules/app";
 import { storageLocal, storageSession } from "/@/utils/storage";
+import { useMultiTagsStoreHook } from "/@/store/modules/multiTags";
 import { toggleTheme } from "@zougt/vite-plugin-theme-preprocessor/dist/browser-utils";
 
 const router = useRouter();
@@ -28,23 +32,23 @@ const instanceConfig =
   getCurrentInstance().appContext.app.config.globalProperties.$config;
 
 let themeColors = ref<Array<themeColorsType>>([
-  // 暗雅（默认）
+  // 道奇蓝（默认）
   { rgb: "27, 42, 71", themeColor: "default" },
-  // 明亮
+  // 亮白色
   { rgb: "255, 255, 255", themeColor: "light" },
-  // 薄暮
+  // 猩红色
   { rgb: "245, 34, 45", themeColor: "dusk" },
-  // 火山
+  // 橙红色
   { rgb: "250, 84, 28", themeColor: "volcano" },
-  // 黄色
+  // 金色
   { rgb: "250, 219, 20", themeColor: "yellow" },
-  // 明青
+  // 绿宝石
   { rgb: "19, 194, 194", themeColor: "mingQing" },
-  // 极光绿
+  // 酸橙绿
   { rgb: "82, 196, 26", themeColor: "auroraGreen" },
-  // 粉红
+  // 深粉色
   { rgb: "235, 47, 150", themeColor: "pink" },
-  // 酱紫
+  // 深紫罗兰色
   { rgb: "114, 46, 209", themeColor: "saucePurple" }
 ]);
 
@@ -76,7 +80,8 @@ const logoVal = ref(storageLocal.getItem("logoVal") || "1");
 const settings = reactive({
   greyVal: instance.sets.grey,
   weakVal: instance.sets.weak,
-  tabsVal: instance.sets.hideTabs
+  tabsVal: instance.sets.hideTabs,
+  multiTagsCache: instance.sets.multiTagsCache
 });
 
 function toggleClass(flag: boolean, clsName: string, target?: HTMLElement) {
@@ -92,7 +97,8 @@ const greyChange = (value): void => {
   instance.sets = {
     grey: value,
     weak: instance.sets.weak,
-    hideTabs: instance.sets.hideTabs
+    hideTabs: instance.sets.hideTabs,
+    multiTagsCache: instance.sets.multiTagsCache
   };
 };
 
@@ -106,7 +112,8 @@ const weekChange = (value): void => {
   instance.sets = {
     grey: instance.sets.grey,
     weak: value,
-    hideTabs: instance.sets.hideTabs
+    hideTabs: instance.sets.hideTabs,
+    multiTagsCache: instance.sets.multiTagsCache
   };
 };
 
@@ -115,9 +122,21 @@ const tagsChange = () => {
   instance.sets = {
     grey: instance.sets.grey,
     weak: instance.sets.weak,
-    hideTabs: showVal
+    hideTabs: showVal,
+    multiTagsCache: instance.sets.multiTagsCache
   };
   emitter.emit("tagViewsChange", showVal);
+};
+
+const multiTagsCacheChange = () => {
+  let multiTagsCache = settings.multiTagsCache;
+  instance.sets = {
+    grey: instance.sets.grey,
+    weak: instance.sets.weak,
+    hideTabs: instance.sets.hideTabs,
+    multiTagsCache: multiTagsCache
+  };
+  useMultiTagsStoreHook().multiTagsCacheChange(multiTagsCache);
 };
 
 //初始化项目配置
@@ -135,6 +154,19 @@ function onReset() {
   storageSession.clear();
   toggleClass(false, "html-grey", document.querySelector("html"));
   toggleClass(false, "html-weakness", document.querySelector("html"));
+  useMultiTagsStoreHook().handleTags("equal", [
+    {
+      path: "/welcome",
+      parentPath: "/",
+      meta: {
+        title: "message.hshome",
+        icon: "el-icon-s-home",
+        i18n: true,
+        showLink: true
+      }
+    }
+  ]);
+  useMultiTagsStoreHook().multiTagsCacheChange(getConfig().MultiTagsCache);
   router.push("/login");
 }
 
@@ -205,11 +237,33 @@ function setLayoutThemeColor(theme: string) {
   });
   instance.layout = { layout: useAppStoreHook().layout, theme };
 }
+
+let dataTheme = ref<boolean>(false);
+
+// 日间、夜间主题切换
+function dataThemeChange() {
+  const body = document.documentElement as HTMLElement;
+  if (dataTheme.value) {
+    body.setAttribute("data-theme", "dark");
+    setLayoutThemeColor("light");
+  } else body.setAttribute("data-theme", "");
+}
 </script>
 
 <template>
   <panel>
-    <el-divider>主题风格</el-divider>
+    <el-divider>主题</el-divider>
+    <el-switch
+      v-model="dataTheme"
+      inline-prompt
+      class="pure-datatheme"
+      :active-icon="dayIcon"
+      :inactive-icon="darkIcon"
+      @change="dataThemeChange"
+    >
+    </el-switch>
+
+    <el-divider>导航栏模式</el-divider>
     <ul class="pure-theme">
       <el-tooltip class="item" content="左侧菜单模式" placement="bottom">
         <li
@@ -234,8 +288,8 @@ function setLayoutThemeColor(theme: string) {
       </el-tooltip>
     </ul>
 
-    <el-divider>主题色</el-divider>
-    <ul class="theme-color">
+    <el-divider v-if="!dataTheme">主题色</el-divider>
+    <ul class="theme-color" v-if="!dataTheme">
       <li
         v-for="(item, index) in themeColors"
         :key="index"
@@ -304,6 +358,18 @@ function setLayoutThemeColor(theme: string) {
         >
         </el-switch>
       </li>
+      <li>
+        <span>标签页持久化</span>
+        <el-switch
+          v-model="settings.multiTagsCache"
+          inline-prompt
+          inactive-color="#a6a6a6"
+          active-text="开"
+          inactive-text="关"
+          @change="multiTagsCacheChange"
+        >
+        </el-switch>
+      </li>
 
       <li>
         <span>标签风格</span>
@@ -347,6 +413,14 @@ function setLayoutThemeColor(theme: string) {
 :deep(.el-divider__text) {
   font-size: 16px;
   font-weight: 700;
+}
+
+.pure-datatheme {
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  display: block;
+  padding-top: 25px;
 }
 
 .pure-theme {

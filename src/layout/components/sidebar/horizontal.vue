@@ -12,6 +12,7 @@ import { emitter } from "/@/utils/mitt";
 import Notice from "../notice/index.vue";
 import { templateRef } from "@vueuse/core";
 import SidebarItem from "./sidebarItem.vue";
+import avatars from "/@/assets/avatars.jpg";
 import { algorithm } from "/@/utils/algorithm";
 import screenfull from "../screenfull/index.vue";
 import { useRoute, useRouter } from "vue-router";
@@ -28,7 +29,6 @@ const title =
   getCurrentInstance().appContext.config.globalProperties.$config?.Title;
 
 const menuRef = templateRef<ElRef | null>("menu", null);
-const routeStore = usePermissionStoreHook();
 const route = useRoute();
 const router = useRouter();
 const routers = useRouter().options.routes;
@@ -132,7 +132,7 @@ onMounted(() => {
       @select="menuSelect"
     >
       <sidebar-item
-        v-for="route in routeStore.wholeRoutes"
+        v-for="route in usePermissionStoreHook().wholeMenus"
         :key="route.path"
         :item="route"
         :base-path="route.path"
@@ -174,16 +174,15 @@ onMounted(() => {
       <!-- 退出登陆 -->
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
-          <img
-            src="https://avatars.githubusercontent.com/u/44761321?s=400&u=30907819abd29bb3779bc247910873e7c7f7c12f&v=4"
-          />
+          <img :src="avatars" />
           <p>{{ usename }}</p>
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
-            <el-dropdown-item icon="el-icon-switch-button" @click="logout">{{
-              $t("message.hsLoginOut")
-            }}</el-dropdown-item>
+            <el-dropdown-item @click="logout">
+              <i class="ri-logout-circle-r-line"></i
+              >{{ $t("message.hsLoginOut") }}</el-dropdown-item
+            >
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -224,7 +223,12 @@ onMounted(() => {
 }
 
 .logout {
+  max-width: 120px;
+
   .el-dropdown-menu__item {
+    min-width: 100%;
+    display: inline-flex;
+    flex-wrap: wrap;
     padding: 0 18px !important;
   }
 

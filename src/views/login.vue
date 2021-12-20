@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import { initRouter } from "/@/router";
+import { initRouter } from "/@/router/utils";
 import { storageSession } from "/@/utils/storage";
 import { addClass, removeClass } from "/@/utils/operate";
 import bg from "/@/assets/login/bg.png";
@@ -71,7 +71,7 @@ function onPwdBlur() {
 
 <template>
   <img :src="bg" class="wave" />
-  <div class="container">
+  <div class="login-container">
     <div class="img">
       <component :is="currentWeek"></component>
     </div>
